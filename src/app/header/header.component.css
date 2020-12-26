@@ -1,0 +1,32 @@
+.header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    padding: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    border-radius: 22px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.header h2 {
+    font-weight: bolder;
+    width: fit-content;
+    grid-column: 1;
+}
+
+.header a {
+    color: red;
+    border: 1px solid red;
+    border-block-end-width: 1px;
+    border-radius: 5px;
+    padding: 0.8rem;
+    margin: auto 0;
+    height: fit-content;
+    float: right;
+    cursor: pointer;
+    grid-column: 2;
+}

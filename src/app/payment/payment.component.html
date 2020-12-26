@@ -1,0 +1,27 @@
+<div class="payment">
+    <div class="qrWrapper">
+        <div class="qr">
+            <img src="assets/Bitcoin.svg">
+            <qrcode
+                [qrdata]="'bitcoin:1QFrbboisCYgeBdowGAuCTK3r2YnZuApYd'"
+                [width]="256"
+                [errorCorrectionLevel]="'M'"
+                [elementType]="'svg'"
+                [margin]="1">
+            </qrcode>
+        </div>
+    </div>
+
+    <div class="data">
+        <!-- Payment data -->
+        <span id="target">Send to
+            <h3>1QFrbboisCYgeBdowGAuCTK3r2YnZuApYd</h3>
+        </span>
+        <span id="amount">Amount
+            <h3>0.00133700 BTC</h3>
+        </span>
+        <span id="status">Status
+            <h3>Pending</h3>
+        </span>
+    </div>
+</div>

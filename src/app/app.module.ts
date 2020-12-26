@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { PaymentComponent } from './payment/payment.component';
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { PaymentComponent } from './payment/payment.component';
     PaymentComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    QRCodeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

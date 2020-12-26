@@ -1,0 +1,57 @@
+.payment {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 400px;
+    background-color: hsl(0, 0%, 11%);
+    border-radius: 8px;
+    transform: translateY(-8px);
+}
+
+.qr {
+    position: relative;
+    transform: translateY(25%);
+    margin: 0 auto;
+    grid-row-start: 1;
+    grid-row-end: 5;
+    width: 256px;
+    height: 256px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.qr > img {
+    position: absolute;
+    height: 64px;
+    width: 64px;
+    transform: translate(96px, 96px);
+    z-index: 2;
+}
+
+.qrWrapper {
+}
+
+.payment * {
+    color: #fff;
+}
+
+/* Data */
+.data {
+    display: grid;
+    grid-template-columns: 1fr 50px;
+    grid-template-rows: 1fr 4rem 4rem 4rem 1fr;
+}
+#target {
+    grid-row: 2;
+}
+#amount {
+    grid-row: 3;
+}
+#status {
+    grid-row: 4;
+}
+
+h3 {
+    line-height: 0;
+}
