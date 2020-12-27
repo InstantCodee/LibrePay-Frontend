@@ -5,16 +5,31 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { PaymentComponent } from './payment/payment.component';
 import { QRCodeModule } from 'angularx-qrcode';
+import { PayComponent } from './pay/pay.component';
+import { RouterModule } from '@angular/router';
+import { HelloComponent } from './hello/hello.component';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+import { HttpClientModule } from '@angular/common/http';
+import { AppRoutingModule } from 'src/routes';
+import { NotFoundComponent } from './not-found/not-found.component';
+
+const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    PaymentComponent
+    PaymentComponent,
+    PayComponent,
+    HelloComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
-    QRCodeModule
+    QRCodeModule,
+    HttpClientModule,
+    AppRoutingModule,
+    SocketIoModule.forRoot(config)
   ],
   providers: [],
   bootstrap: [AppComponent]

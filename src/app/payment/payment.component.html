@@ -3,7 +3,7 @@
         <div class="qr">
             <img src="assets/Bitcoin.svg">
             <qrcode
-                [qrdata]="'bitcoin:1QFrbboisCYgeBdowGAuCTK3r2YnZuApYd'"
+                [qrdata]="'bitcoin:' + invoice!!.receiveAddress"
                 [width]="256"
                 [errorCorrectionLevel]="'M'"
                 [elementType]="'svg'"
@@ -12,16 +12,16 @@
         </div>
     </div>
 
-    <div class="data">
+    <div class="data" *ngIf="ready">
         <!-- Payment data -->
         <span id="target">Send to
-            <h3>1QFrbboisCYgeBdowGAuCTK3r2YnZuApYd</h3>
+            <h3>{{ invoice!!.receiveAddress }}</h3>
         </span>
         <span id="amount">Amount
-            <h3>0.00133700 BTC</h3>
+            <h3>{{ getAmount() }} BTC</h3>
         </span>
         <span id="status">Status
-            <h3>Pending</h3>
+            <h3>{{ getStatus() }}</h3>
         </span>
     </div>
 </div>
