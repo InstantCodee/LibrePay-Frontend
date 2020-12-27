@@ -26,10 +26,15 @@
     height: 64px;
     width: 64px;
     transform: translate(96px, 96px);
+    animation: coinRoll 1s ease;
     z-index: 2;
 }
 
-.qrWrapper {
+@keyframes coinRoll {
+    0% {
+        transform: translateY(96px) rotate(-45deg) scale(0.5);
+        opacity: 0.7;
+    }
 }
 
 .payment * {
