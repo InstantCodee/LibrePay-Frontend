@@ -1,4 +1,4 @@
 <div class="header">
     <h2>LibrePay</h2>
-    <a>Cancel payment</a>
+    <a *ngIf="this.backend.isInvoicePending()">Cancel payment</a>
 </div>

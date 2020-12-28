@@ -19,6 +19,17 @@
     /* box-shadow: 1px 1px 112px 23px rgba(0,0,0,0.75); */
 }
 
+.smaller {
+    min-width: 200px;
+    width: 40vw !important;
+}
+
+@media (max-width: 800px) {
+    .content {
+        width: 100vw !important;
+    }
+}
+
 .content * {
     width: 100%;
 }

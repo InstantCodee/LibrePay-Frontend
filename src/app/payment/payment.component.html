@@ -1,9 +1,23 @@
-<div class="payment">
+<div class="payment request" *ngIf="this.backend.isInvoiceRequested()">
+    <h3 id="title">Choose your<br>payment method</h3>
+    <p id="price">{{ this.backend.invoice!!.totalPrice!!.toFixed(2) }} €</p>
+
+    <ul id="list">
+        <li *ngFor="let coin of this.backend.invoice!!.paymentMethods" (click)="chooseMethod(coin.method)">
+            <img [src]="this.backend.getIcon(coin.method)">
+            <div>
+                <h4>{{ this.backend.findCryptoBySymbol(coin.method) }}</h4>
+                <p>{{ coin.amount }} {{ coin.method }}</p>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="payment main" *ngIf="!this.backend.isInvoiceRequested() && ready">
     <div class="qrWrapper">
         <div class="qr">
             <img src="assets/Bitcoin.svg">
             <qrcode
-                [qrdata]="'bitcoin:' + invoice!!.receiveAddress"
+                [qrdata]="'bitcoin:' + this.backend.invoice!!.receiveAddress"
                 [width]="256"
                 [errorCorrectionLevel]="'M'"
                 [elementType]="'svg'"
@@ -12,16 +26,16 @@
         </div>
     </div>
 
-    <div class="data" *ngIf="ready">
+    <div class="data">
         <!-- Payment data -->
         <span id="target">Send to
-            <h3>{{ invoice!!.receiveAddress }}</h3>
+            <h3>{{ this.backend.invoice!.receiveAddress }}</h3>
         </span>
         <span id="amount">Amount
-            <h3>{{ getAmount() }} BTC</h3>
+            <h3>{{ this.backend.getAmount() }} BTC</h3>
         </span>
         <span id="status">Status
-            <h3>{{ getStatus() }}</h3>
+            <h3>{{ this.backend.getStatus() }}</h3>
         </span>
     </div>
 </div>

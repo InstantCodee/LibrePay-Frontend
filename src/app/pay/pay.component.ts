@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BackendService } from '../backend.service';
 
 @Component({
   selector: 'app-pay',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PayComponent implements OnInit {
 
-  constructor() { }
+  constructor(public backend: BackendService) { }
 
   ngOnInit(): void {
   }

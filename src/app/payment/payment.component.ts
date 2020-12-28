@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BackendService, IInvoice, CryptoUnits, PaymentStatus } from '../backend.service';
+import { BackendService, IInvoice, CryptoUnits, PaymentStatus, IPaymentMethod } from '../backend.service';
 
 @Component({
   selector: 'app-payment',
@@ -12,10 +12,9 @@ export class PaymentComponent implements OnInit {
   paymentSelector = '';
   choosenPaymentMethod = CryptoUnits.BITCOIN;
   ready = false;
-  invoice: IInvoice | null = null;
 
   constructor(
-    private backend: BackendService,
+    public backend: BackendService,
     private route: ActivatedRoute
   ) { }
 
@@ -27,32 +26,13 @@ export class PaymentComponent implements OnInit {
     });
   }
 
-  async get() {
-    this.invoice = await this.backend.getInvoice(this.paymentSelector);
+  chooseMethod(coin: CryptoUnits) {
+    this.backend.setPaymentMethod(coin);
+  }
+
+  async get(): Promise<void> {
+    await this.backend.setInvoice(this.paymentSelector);
     this.ready = true;
-  }
-
-  getAmount() {
-    return this.invoice?.paymentMethods.find(item => {
-      return item.method === CryptoUnits.BITCOIN;
-    })?.amount.toFixed(8);
-  }
-
-  getStatus() {
-    switch (this.invoice?.status) {
-      case PaymentStatus.PENDING:
-        return 'Pending';
-      case PaymentStatus.PARTIALLY:
-        return 'Partly';
-      case PaymentStatus.UNCONFIRMED:
-        return 'Unconfirmed';
-      case PaymentStatus.DONE:
-        return 'Paid';
-      case PaymentStatus.CANCELLED:
-        return 'Cancelled';
-      default:
-        return 'Unknown';
-    }
   }
 
 }

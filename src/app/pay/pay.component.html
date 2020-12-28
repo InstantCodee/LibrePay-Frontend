@@ -6,7 +6,7 @@
     <div class="cube"></div>
     <div class="cube"></div>
 </div>
-<div class="content">
+<div class="content" [ngClass]="{smaller: this.backend.isInvoiceRequested()}">
     <app-header></app-header>
     <app-payment></app-payment>
 </div>
