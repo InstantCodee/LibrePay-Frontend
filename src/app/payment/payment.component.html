@@ -1,6 +1,6 @@
 <div class="payment request" *ngIf="this.backend.isInvoiceRequested()">
     <h3 id="title">Choose your<br>payment method</h3>
-    <p id="price">{{ this.backend.invoice!!.totalPrice!!.toFixed(2) }} €</p>
+    <p id="price">{{ this.backend.invoice.totalPrice!.toFixed(2) }} €</p>
 
     <ul id="list">
         <li *ngFor="let coin of this.backend.invoice!!.paymentMethods" (click)="chooseMethod(coin.method)">
@@ -12,12 +12,12 @@
         </li>
     </ul>
 </div>
-<div class="payment main" *ngIf="!this.backend.isInvoiceRequested() && ready">
+<div class="payment main" *ngIf="!this.backend.isInvoiceRequested() && ready" [ngClass]="{invalid: status === 'Expired' || status === 'Paid too little'}">
     <div class="qrWrapper">
         <div class="qr">
             <img src="assets/Bitcoin.svg">
             <qrcode
-                [qrdata]="'bitcoin:' + this.backend.invoice!!.receiveAddress"
+                [qrdata]="'bitcoin:' + this.backend.invoice!!.receiveAddress + '?amount=' + this.backend.getAmount()"
                 [width]="256"
                 [errorCorrectionLevel]="'M'"
                 [elementType]="'svg'"
@@ -29,13 +29,43 @@
     <div class="data">
         <!-- Payment data -->
         <span id="target">Send to
-            <h3>{{ this.backend.invoice!.receiveAddress }}</h3>
+            <h3>{{ this.backend.invoice?.receiveAddress }}</h3>
         </span>
         <span id="amount">Amount
-            <h3>{{ this.backend.getAmount() }} BTC</h3>
+            <h3>{{ this.backend.getAmount() }} BTC <span class="price"> | {{ this.backend.invoice.totalPrice!.toFixed(2) }} €</span></h3>
         </span>
         <span id="status">Status
-            <h3>{{ this.backend.getStatus() }}</h3>
+            <h3>
+                {{ status }}
+                <div class="loader">
+                    <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                       width="32px" height="32px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                    <path fill="#f7a12f" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                      <animateTransform attributeType="xml"
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 25 25"
+                        to="360 25 25"
+                        dur="1s"
+                        repeatCount="indefinite"/>
+                      </path>
+                    </svg>
+                  </div>
+            </h3>
+            <small *ngIf="status === 'Unconfirmed'">Confirmations: {{ this.backend.confirmations }}</small>
         </span>
     </div>
+</div>
+
+<div class="alert xyz-in" xyz="fade-100% duration-3 down-1" *ngIf="status === 'Expired'">
+    <p><b>This invoice expired</b>
+    <br>You cannot pay this invoice anymore. Please try to request a new invoice. </p>
+</div>
+<div class="alert xyz-in" xyz="fade-100% duration-3 down-1" *ngIf="status === 'Paid too much'">
+    <p><b>Looks like you paid too much.</b>
+    <br>Technically <u><b>this invoice is paid</b></u> but we would like to pay the rest back. Since sending back funds is complicated we would like you to contact support@example.org</p>
+</div>
+<div class="alert xyz-in" xyz="fade-100% duration-3 down-1" *ngIf="status === 'Paid too little'">
+    <p><b>Looks like you paid not the requested amount of money.</b>
+    <br><u><b>You cannot pay twice!</b></u> Since sending back funds is complicated we would like you to contact support@example.org</p>
 </div>

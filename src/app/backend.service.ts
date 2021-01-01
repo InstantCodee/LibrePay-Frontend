@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 
 /*
  * The following interfaces are copied from the backend.
- * 
+ *
  * Checkout src/helper/types.ts and src/models/invoice/invoice.interface.ts
  * (in the backend repository) for more information.
  */
@@ -31,11 +31,14 @@ export interface IPaymentMethod {
 }
 
 export enum PaymentStatus {
-  CANCELLED = -2,
-  REQUESTED = -1,
-  PENDING = 0,
-  UNCONFIRMED = 1,
-  DONE = 2,
+  TOOLITTLE = -3,
+  TOOLATE = -2,
+  CANCELLED = -1,
+  REQUESTED = 0,
+  PENDING = 1,
+  UNCONFIRMED = 2,
+  DONE = 3,
+  TOOMUCH = 4
 }
 export interface IInvoice {
   selector: string;
@@ -43,7 +46,7 @@ export interface IInvoice {
   receiveAddress: string;
   paidWith?: CryptoUnits;
   paid?: number;
-  transcationHashes?: string[];
+  transcationHash?: string;
   cart?: ICart[];
   totalPrice?: number;
   currency: string;
@@ -62,16 +65,32 @@ export class BackendService {
 
   SERVER_URL = 'http://localhost:2009';
 
-  invoice: IInvoice | null = null;
+  // Fill with empty data
+  invoice: IInvoice = {
+    selector: '',
+    paymentMethods: [],
+    receiveAddress: '',
+    paid: 0,
+    currency: 'USD',
+    dueBy: Date.now(),
+    successUrl: '',
+    cancelUrl: ''
+  };
   invoiceUpdate: BehaviorSubject<IInvoice | null>;
+
+  // This value is s
+  confirmations: number;
 
   constructor(
     private socket: Socket,
     private http: HttpClient
   ) {
+    this.confirmations = 0;
     this.invoiceUpdate = new BehaviorSubject<IInvoice | null>(null);
     this.socket.on('status', (data: any) => {
       console.log('Status has been updated to: ', data);
+      this.invoice.status = data;
+      this.invoiceUpdate.next(this.invoice);
     });
     this.socket.on('subscribe', (success: boolean) => {
       if (success) { console.log('We\'re getting the progress of this invoice!'); }
@@ -92,17 +111,24 @@ export class BackendService {
       else { console.log('Failed to subscribe'); }
     });
 
+    this.socket.on('confirmationUpdate', (update: any) => {
+      this.confirmations = update.count;
+    });
+
     this.socket.emit('subscribe', { selector });
   }
 
   updateInvoice(): void {
     if (this.invoice !== undefined || this.invoice !== null) {
-      this.setInvoice(this.invoice?.selector!);
+      this.setInvoice(this.invoice.selector);
     }
   }
 
   setInvoice(selector: string): Promise<IInvoice> {
     return new Promise(async (resolve, reject) => {
+      if (selector === undefined || selector === 'undefined' || selector === '') {
+        reject();
+      }
       this.http.get(this.SERVER_URL + '/invoice/' + selector, {
         observe: 'body',
         responseType: 'json'
@@ -118,10 +144,32 @@ export class BackendService {
 
   setPaymentMethod(method: CryptoUnits): Promise<void> {
     return new Promise(async (resolve, reject) => {
+      if (this.invoice === null) { reject('Invoice is not set!'); return; }
+
       this.http.post(`${this.SERVER_URL}/invoice/${this.invoice?.selector}/setmethod`, { method }, {
         responseType: 'json'
       }).toPromise().then(() => {
-        this.setInvoice(this.invoice!!.selector);
+        this.setInvoice(this.invoice.selector);
+      }).catch(err => {
+        reject(err);
+      });
+    });
+  }
+
+  getConfirmation(): Promise<number> {
+    return new Promise(async (resolve, reject) => {
+      if (this.invoice === null || this.invoice.status !== PaymentStatus.UNCONFIRMED) {
+        reject('Invoice is not set!');
+        return;
+      }
+
+      this.http.get(`${this.SERVER_URL}/invoice/${this.invoice.selector}/confirmation`, {
+        observe: 'body',
+        responseType: 'json'
+      }).toPromise().then((res: any) => {
+        this.confirmations = res.confirmation;
+        this.invoiceUpdate.next(this.invoice);
+        resolve(res.confirmation);
       }).catch(err => {
         reject(err);
       });
@@ -150,7 +198,7 @@ export class BackendService {
 
   findCryptoBySymbol(symbol: string): string | null {
     for (const coin in CryptoUnits) {
-      // @ts-ignore: This actually works but I thing it's too hacky for TS. Allow me this one, please?
+      // @ts-ignore: This actually works but I think it's too hacky for TS. Allow me this one, please.
       if (CryptoUnits[coin] === symbol.toUpperCase()) {
         return coin.charAt(0).toUpperCase() + coin.toLowerCase().slice(1);
       }
@@ -173,7 +221,13 @@ export class BackendService {
       case PaymentStatus.DONE:
         return 'Paid';
       case PaymentStatus.CANCELLED:
-        return 'Cancelled';
+        return 'Cancelled by user';
+      case PaymentStatus.TOOLATE:
+        return 'Expired';
+      case PaymentStatus.TOOLITTLE:
+        return 'Paid too little';
+      case PaymentStatus.TOOMUCH:
+        return 'Paid too much';
       default:
         return 'Unknown';
     }

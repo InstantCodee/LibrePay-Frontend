@@ -12,9 +12,10 @@
     border-bottom-right-radius: 0;
 }
 
-.header h2 {
-    font-weight: bolder;
-    width: fit-content;
+.header img {
+    height: 3rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
     grid-column: 1;
 }
 

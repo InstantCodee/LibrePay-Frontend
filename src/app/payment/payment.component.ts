@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BackendService, IInvoice, CryptoUnits, PaymentStatus, IPaymentMethod } from '../backend.service';
+
+import { BackendService, CryptoUnits } from '../backend.service';
 
 @Component({
   selector: 'app-payment',
@@ -10,13 +11,17 @@ import { BackendService, IInvoice, CryptoUnits, PaymentStatus, IPaymentMethod } 
 export class PaymentComponent implements OnInit {
 
   paymentSelector = '';
+  confirmations = 0;
   choosenPaymentMethod = CryptoUnits.BITCOIN;
+  status: string;
   ready = false;
 
   constructor(
     public backend: BackendService,
     private route: ActivatedRoute
-  ) { }
+  ) {
+    this.status = this.backend.getStatus();
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -24,14 +29,19 @@ export class PaymentComponent implements OnInit {
       this.backend.subscribeTo(this.paymentSelector);
       this.get();
     });
+
+    this.backend.invoiceUpdate.subscribe(newInvoice => {
+      this.status = this.backend.getStatus();
+    });
   }
 
-  chooseMethod(coin: CryptoUnits) {
+  chooseMethod(coin: CryptoUnits): void {
     this.backend.setPaymentMethod(coin);
   }
 
   async get(): Promise<void> {
     await this.backend.setInvoice(this.paymentSelector);
+    this.backend.getConfirmation().catch();
     this.ready = true;
   }
 
