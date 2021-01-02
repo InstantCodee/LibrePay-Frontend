@@ -1,3 +1,4 @@
+import { getCurrencySymbol } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -37,6 +38,10 @@ export class PaymentComponent implements OnInit {
 
   chooseMethod(coin: CryptoUnits): void {
     this.backend.setPaymentMethod(coin);
+  }
+
+  currencyPrefix(): string {
+    return getCurrencySymbol(this.backend.invoice.currency, 'narrow');
   }
 
   async get(): Promise<void> {

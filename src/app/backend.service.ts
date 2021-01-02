@@ -128,7 +128,9 @@ export class BackendService {
     return new Promise(async (resolve, reject) => {
       if (selector === undefined || selector === 'undefined' || selector === '') {
         reject();
+        return;
       }
+
       this.http.get(this.SERVER_URL + '/invoice/' + selector, {
         observe: 'body',
         responseType: 'json'
@@ -136,6 +138,24 @@ export class BackendService {
         this.invoice = invoice as IInvoice;
         this.invoiceUpdate.next(this.invoice);
         resolve(this.invoice);
+      }).catch(err => {
+        reject(err);
+      });
+    });
+  }
+
+  cancelInvoice(): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      if (this.invoice.selector === '') {
+        reject('Cannot delete invoice with empty selector.');
+        return;
+      }
+
+      this.http.delete(this.SERVER_URL + '/invoice/' + this.invoice.selector, {
+        observe: 'body',
+        responseType: 'json'
+      }).toPromise().then((invoice) => {
+        resolve();
       }).catch(err => {
         reject(err);
       });

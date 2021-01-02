@@ -30,4 +30,5 @@
     float: right;
     cursor: pointer;
     grid-column: 2;
+    transition: .2s ease;
 }

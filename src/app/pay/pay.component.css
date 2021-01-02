@@ -19,6 +19,10 @@
     /* box-shadow: 1px 1px 112px 23px rgba(0,0,0,0.75); */
 }
 
+#header, #payment {
+    transition: .3s ease;
+}
+
 .smaller {
     min-width: 200px;
     width: 40vw !important;
@@ -34,6 +38,10 @@
     width: 100%;
 }
 
+
+/*
+    BACKGROUND ANIMATION
+*/
 .cube {
     position: absolute;
     top: 80vh;

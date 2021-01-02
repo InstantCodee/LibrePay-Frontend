@@ -1,4 +1,4 @@
 <div class="header">
     <img src="assets/logo.svg">
-    <a *ngIf="this.backend.isInvoicePending()">Cancel payment</a>
+    <a *ngIf="this.backend.isInvoicePending()" (click)="cancel()" [style]="cancelProgressStyle">{{ startCancelling ? 'Are you sure?' : 'Cancel payment'}}</a>
 </div>
