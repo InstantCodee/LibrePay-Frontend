@@ -1,4 +1,24 @@
 <div class="header">
-    <img src="assets/logo.svg">
-    <a *ngIf="this.backend.isInvoicePending()" (click)="cancel()" [style]="cancelProgressStyle">{{ startCancelling ? 'Are you sure?' : 'Cancel payment'}}</a>
+    <div id="cart" *ngIf="this.backend!.invoice!.status! > 0" (click)="this.state.toggleCart()">
+        <svg
+            xmlns="http://www.w3.org/2000/svg" *ngIf="!this.state.showCart.value" class="icon icon-tabler icon-tabler-shopping-cart"
+            width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" title="Shopping cart"
+            fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <circle cx="9" cy="19" r="2" />
+            <circle cx="17" cy="19" r="2" />
+            <path d="M3 3h2l2 12a3 3 0 0 0 3 2h7a3 3 0 0 0 3 -2l1 -7h-15.2" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" *ngIf="this.state.showCart.value" class="icon icon-tabler icon-tabler-x"
+            width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+          <span>Cart</span>
+    </div>
+    <a href="https://librepay.me" target="_blank" class="logo">
+        <img src="assets/logo.svg">
+    </a>
+    <a class="cancel" *ngIf="this.backend.isInvoicePending()" (click)="cancel()" [style]="cancelProgressStyle">{{ startCancelling ? 'Are you sure?' : 'Cancel payment'}}</a>
 </div>

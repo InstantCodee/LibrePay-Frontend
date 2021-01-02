@@ -3,11 +3,11 @@ import { BackendService } from '../backend.service';
 import { StateService } from '../state.service';
 
 @Component({
-  selector: 'app-pay',
-  templateUrl: './pay.component.html',
-  styleUrls: ['./pay.component.css']
+  selector: 'app-cart',
+  templateUrl: './cart.component.html',
+  styleUrls: ['./cart.component.css']
 })
-export class PayComponent implements OnInit {
+export class CartComponent implements OnInit {
 
   constructor(
     public backend: BackendService,

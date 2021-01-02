@@ -12,6 +12,7 @@ import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from 'src/routes';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { CartComponent } from './cart/cart.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
 
@@ -22,7 +23,8 @@ const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
     PaymentComponent,
     PayComponent,
     HelloComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,

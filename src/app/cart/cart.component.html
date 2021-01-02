@@ -1,0 +1,10 @@
+<div class="cart" xyz="stagger-0.5 fade-100% down-1 ease-ease" >
+    <ul>
+        <li *ngFor="let item of this.backend.invoice.cart;let indexOfelement=index;" [ngClass]="{'xyz-in': this.state.showCart.value, 'xyz-out': !this.state.showCart.value}">
+            <img [src]="item.image" class="image">
+            <h5 class="name">{{ item.name }}</h5>
+            <span class="price"><b>{{ item.price.toFixed(2) }} {{ this.backend.currencyPrefix() }}</b><br>
+            {{ this.backend.calculateCryptoPrice(indexOfelement).toFixed(8) }} {{ this.backend.invoice.paymentMethod }}</span>
+        </li>
+    </ul>
+</div>

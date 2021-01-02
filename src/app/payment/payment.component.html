@@ -3,7 +3,7 @@
 -->
 <div class="payment request" xyz="stagger-2 fade-100% down-1" *ngIf="this.backend.isInvoiceRequested()">
     <h3 id="title">Choose your<br>payment method</h3>
-    <p id="price">{{ this.backend.invoice.totalPrice!.toFixed(2) }} {{ currencyPrefix() }}</p>
+    <p id="price">{{ this.backend.invoice.totalPrice!.toFixed(2) }} {{ this.backend.currencyPrefix() }}</p>
 
     <ul id="list">
         <li class="xyz-in" *ngFor="let coin of this.backend.invoice!!.paymentMethods" (click)="chooseMethod(coin.method)">
@@ -19,10 +19,11 @@
 <!--
     Main view
 -->
-<div class="payment main" xyz="stagger-2 fade-100% down-1 ease-ease" *ngIf="!this.backend.isInvoiceRequested() && ready"
+<div class="payment main" xyz="stagger-0.5 fade-100% down-1 ease-ease" 
+    *ngIf="!this.backend.isInvoiceRequested() && ready && !hideMain"
     [ngClass]="{invalid: status === 'Expired' || status === 'Paid too little' || status === 'Cancelled by user'}">
 
-    <div class="qrWrapper xyz-in">
+    <div class="qrWrapper" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
         <div class="qr">
             <img src="assets/Bitcoin.svg">
             <qrcode
@@ -37,13 +38,13 @@
 
     <div class="data">
         <!-- Payment data -->
-        <span id="target" class="xyz-in">Send to
+        <span id="target" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">Send to
             <h3>{{ this.backend.invoice?.receiveAddress }}</h3>
         </span>
-        <span id="amount" class="xyz-in">Amount
-            <h3>{{ this.backend.getAmount() }} BTC <span class="price"> | {{ this.backend.invoice.totalPrice!.toFixed(2) }} {{ currencyPrefix() }}</span></h3>
+        <span id="amount" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">Amount
+            <h3>{{ this.backend.getAmount() }} BTC <span class="price"> | {{ this.backend.invoice.totalPrice!.toFixed(2) }} {{ this.backend.currencyPrefix() }}</span></h3>
         </span>
-        <span id="status" class="xyz-in">Status
+        <span id="status" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">Status
             <h3>
                 {{ status }}
                 <div class="loader" *ngIf="this.status === 'Unconfirmed'">
@@ -65,6 +66,11 @@
         </span>
     </div>
 </div>
+
+<!--
+    Cart view
+-->
+<app-cart id="cart" [ngStyle]="{'display': !hideMain ? 'none' : 'block'}"></app-cart>
 
 <!--
     Alerts

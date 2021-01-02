@@ -1,3 +1,4 @@
+import { getCurrencySymbol } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
@@ -26,8 +27,9 @@ export interface ICart {
 }
 
 export interface IPaymentMethod {
-  method: any;
+  method: CryptoUnits;
   amount: number;
+  exRate: number;
 }
 
 export enum PaymentStatus {
@@ -43,19 +45,20 @@ export enum PaymentStatus {
 export interface IInvoice {
   selector: string;
   paymentMethods: IPaymentMethod[];
-  receiveAddress: string;
-  paidWith?: CryptoUnits;
-  paid?: number;
+  paymentMethod?: CryptoUnits;
+  receiveAddress?: string;
   transcationHash?: string;
+  confirmation?: number;
   cart?: ICart[];
   totalPrice?: number;
   currency: string;
-  dueBy: number;
+  dueBy: Date;
   status?: PaymentStatus;
   email?: string;
   successUrl: string;
   cancelUrl: string;
   createdAt?: number;
+
 }
 
 @Injectable({
@@ -70,9 +73,8 @@ export class BackendService {
     selector: '',
     paymentMethods: [],
     receiveAddress: '',
-    paid: 0,
     currency: 'USD',
-    dueBy: Date.now(),
+    dueBy: new Date(),
     successUrl: '',
     cancelUrl: ''
   };
@@ -102,6 +104,9 @@ export class BackendService {
     return this.socket;
   }
 
+  /**
+   * Subscribe to the real-time status of the selected invoice.
+   */
   subscribeTo(selector: string): void {
     this.socket.on('subscribe', (status: boolean) => {
       if (status) {
@@ -118,12 +123,18 @@ export class BackendService {
     this.socket.emit('subscribe', { selector });
   }
 
+  /**
+   * This will update the current invoice
+   */
   updateInvoice(): void {
     if (this.invoice !== undefined || this.invoice !== null) {
       this.setInvoice(this.invoice.selector);
     }
   }
 
+  /**
+   * This will set the current selected invoice by the `selector`.
+   */
   setInvoice(selector: string): Promise<IInvoice> {
     return new Promise(async (resolve, reject) => {
       if (selector === undefined || selector === 'undefined' || selector === '') {
@@ -144,6 +155,9 @@ export class BackendService {
     });
   }
 
+  /**
+   * This will notify the backend that the user just cancelled the payment.
+   */
   cancelInvoice(): Promise<void> {
     return new Promise(async (resolve, reject) => {
       if (this.invoice.selector === '') {
@@ -162,6 +176,9 @@ export class BackendService {
     });
   }
 
+  /**
+   * This will set the payment method of the selected invoice.
+   */
   setPaymentMethod(method: CryptoUnits): Promise<void> {
     return new Promise(async (resolve, reject) => {
       if (this.invoice === null) { reject('Invoice is not set!'); return; }
@@ -170,12 +187,20 @@ export class BackendService {
         responseType: 'json'
       }).toPromise().then(() => {
         this.setInvoice(this.invoice.selector);
+        resolve();
       }).catch(err => {
         reject(err);
       });
     });
   }
 
+  currencyPrefix(): string {
+    return getCurrencySymbol(this.invoice.currency, 'narrow');
+  }
+
+  /**
+   * Can be used if the socket connection is broken or as initial call.
+   */
   getConfirmation(): Promise<number> {
     return new Promise(async (resolve, reject) => {
       if (this.invoice === null || this.invoice.status !== PaymentStatus.UNCONFIRMED) {
@@ -197,7 +222,7 @@ export class BackendService {
   }
 
   /**
-   * @returns Path to icon
+   * @returns Path to icon in assets folder
    */
   getIcon(unit: CryptoUnits): string {
     switch (unit) {
@@ -226,10 +251,28 @@ export class BackendService {
     return null;
   }
 
+  /**
+   * @returns The price to pay by cryptocurrency;
+   */
   getAmount(): string | undefined {
     return this.invoice?.paymentMethods.find(item => {
-      return item.method === CryptoUnits.BITCOIN;
+      return item.method === this.invoice.paymentMethod;
     })?.amount.toFixed(8);
+  }
+
+  /**
+   * Calculate the price in crypto of a specifc product.
+   * @param prodcut Index of product in cart
+   */
+  calculateCryptoPrice(productNr: number): number {
+    if (this.invoice.cart === undefined) return 0;
+    if (this.invoice.paymentMethod === undefined) return 0;    
+
+    const product = this.invoice.cart[productNr];
+    const exRate = this.invoice.paymentMethods.find(method => { return method.method === this.invoice.paymentMethod })?.exRate;
+    if (exRate === undefined) return 0;
+
+    return product.quantity * product.price / exRate;
   }
 
   getStatus(): string {
