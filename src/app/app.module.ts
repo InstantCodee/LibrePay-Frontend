@@ -6,7 +6,6 @@ import { HeaderComponent } from './header/header.component';
 import { PaymentComponent } from './payment/payment.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { PayComponent } from './pay/pay.component';
-import { RouterModule } from '@angular/router';
 import { HelloComponent } from './hello/hello.component';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { HttpClientModule } from '@angular/common/http';
@@ -18,6 +17,9 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { environment } from '../environments/environment';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './dashboard/login/login.component';
+import { FormsModule } from '@angular/forms';
+import { OverviewComponent } from './dashboard/overview/overview.component';
+import { DashboardHeaderComponent } from './dashboard/header/header.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { LoginComponent } from './dashboard/login/login.component';
     NotFoundComponent,
     CartComponent,
     DashboardComponent,
-    LoginComponent
+    LoginComponent,
+    OverviewComponent,
+    DashboardHeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +42,9 @@ import { LoginComponent } from './dashboard/login/login.component';
     AppRoutingModule,
     SocketIoModule.forRoot(config),
     PushNotificationsModule,
-    ClipboardModule
+    ClipboardModule,
+    FormsModule,
+    SocketIoModule.forRoot(config)
   ],
   providers: [],
   bootstrap: [AppComponent]
