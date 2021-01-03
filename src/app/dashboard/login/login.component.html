@@ -1,1 +1,10 @@
-<p>login works!</p>
+<div class="frame">
+    <div class="login">
+        <h1>Login</h1>
+        <form (submit)="login()">
+            <input type="text" placeholder="Username" required="required" [(ngModel)]="username" [ngModelOptions]="{standalone: true}" />
+            <input type="password" placeholder="Password" required="required" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" />
+            <button type="submit" value="login" id="login-form-submit" onclick="return check(this.form)" class="btn btn-primary btn-block btn-large">Login</button>
+        </form>
+    </div>
+</div>

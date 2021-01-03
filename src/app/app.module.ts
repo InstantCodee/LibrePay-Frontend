@@ -15,6 +15,9 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { CartComponent } from './cart/cart.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './dashboard/login/login.component';
+import { FormsModule } from '@angular/forms';
+import { OverviewComponent } from './dashboard/overview/overview.component';
+import { DashboardHeaderComponent } from './dashboard/header/header.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
 
@@ -28,13 +31,16 @@ const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
     NotFoundComponent,
     CartComponent,
     DashboardComponent,
-    LoginComponent
+    LoginComponent,
+    OverviewComponent,
+    DashboardHeaderComponent
   ],
   imports: [
     BrowserModule,
     QRCodeModule,
     HttpClientModule,
     AppRoutingModule,
+    FormsModule,
     SocketIoModule.forRoot(config)
   ],
   providers: [],
