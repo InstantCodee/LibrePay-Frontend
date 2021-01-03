@@ -6,7 +6,6 @@ import { HeaderComponent } from './header/header.component';
 import { PaymentComponent } from './payment/payment.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { PayComponent } from './pay/pay.component';
-import { RouterModule } from '@angular/router';
 import { HelloComponent } from './hello/hello.component';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { HttpClientModule } from '@angular/common/http';
@@ -17,6 +16,9 @@ import { PushNotificationsModule } from 'ng-push-ivy';
 import { ClipboardModule } from 'ngx-clipboard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './dashboard/login/login.component';
+import { FormsModule } from '@angular/forms';
+import { OverviewComponent } from './dashboard/overview/overview.component';
+import { DashboardHeaderComponent } from './dashboard/header/header.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
 
@@ -30,7 +32,9 @@ const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
     NotFoundComponent,
     CartComponent,
     DashboardComponent,
-    LoginComponent
+    LoginComponent,
+    OverviewComponent,
+    DashboardHeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +43,9 @@ const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
     AppRoutingModule,
     SocketIoModule.forRoot(config),
     PushNotificationsModule,
-    ClipboardModule
+    ClipboardModule,
+    FormsModule,
+    SocketIoModule.forRoot(config)
   ],
   providers: [],
   bootstrap: [AppComponent]
