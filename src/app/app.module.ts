@@ -16,6 +16,7 @@ import { CartComponent } from './cart/cart.component';
 import { PushNotificationsModule } from 'ng-push-ivy';
 import { ClipboardModule } from 'ngx-clipboard';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoginComponent } from './dashboard/login/login.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
 
@@ -28,7 +29,8 @@ const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
     HelloComponent,
     NotFoundComponent,
     CartComponent,
-    DashboardComponent
+    DashboardComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
