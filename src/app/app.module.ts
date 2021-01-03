@@ -8,6 +8,7 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { PayComponent } from './pay/pay.component';
 import { RouterModule } from '@angular/router';
 import { HelloComponent } from './hello/hello.component';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from 'src/routes';
 import { NotFoundComponent } from './not-found/not-found.component';
@@ -15,6 +16,7 @@ import { CartComponent } from './cart/cart.component';
 import { PushNotificationsModule } from 'ng-push-ivy';
 import { ClipboardModule } from 'ngx-clipboard';
 import { environment } from '../environments/environment';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -24,13 +26,15 @@ import { environment } from '../environments/environment';
     PayComponent,
     HelloComponent,
     NotFoundComponent,
-    CartComponent
+    CartComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
     QRCodeModule,
     HttpClientModule,
     AppRoutingModule,
+    SocketIoModule.forRoot(config),
     PushNotificationsModule,
     ClipboardModule
   ],
