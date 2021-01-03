@@ -17,6 +17,7 @@ import { PushNotificationsModule } from 'ng-push-ivy';
 import { ClipboardModule } from 'ngx-clipboard';
 import { environment } from '../environments/environment';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoginComponent } from './dashboard/login/login.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     HelloComponent,
     NotFoundComponent,
     CartComponent,
-    DashboardComponent
+    DashboardComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
