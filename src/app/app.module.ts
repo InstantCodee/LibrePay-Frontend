@@ -19,7 +19,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './dashboard/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { OverviewComponent } from './dashboard/overview/overview.component';
-import { DashboardHeaderComponent } from './dashboard/header/header.component';
+import { DashboardHeaderComponent } from './dashboard/header/header.component';g: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
 
 @NgModule({
   declarations: [
@@ -33,8 +33,7 @@ import { DashboardHeaderComponent } from './dashboard/header/header.component';
     DashboardComponent,
     LoginComponent,
     OverviewComponent,
-    DashboardHeaderComponent,
-    DashboardComponent
+    DashboardHeaderComponent
   ],
   imports: [
     BrowserModule,
