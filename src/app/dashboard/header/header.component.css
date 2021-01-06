@@ -8,3 +8,9 @@
     z-index: 999;
     border-radius: 8px;
 }
+
+.history-svg {}
+
+.admin-svg {
+    fill: white;
+}
