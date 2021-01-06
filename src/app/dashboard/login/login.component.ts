@@ -18,7 +18,15 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    const loginStatus = this.dashboard.login("admin", "password");
+    if (loginStatus) {
+      this.router.navigate(['dashboard', 'overview']);
+    } else {
+      // TODO: Meldung anzeigen
+    }
   }
+
 
   login() {
     const loginStatus = this.dashboard.login(this.username, this.password);
