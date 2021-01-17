@@ -25,9 +25,9 @@
 
     <div class="qrWrapper" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
         <div class="qr">
-            <img src="assets/Bitcoin.svg">
+            <img [src]="this.backend.getIcon()">
             <qrcode
-                [qrdata]="'bitcoin:' + this.backend.invoice!!.receiveAddress + '?amount=' + this.backend.getAmount()"
+                [qrdata]="this.backend.findCryptoBySymbol()!.toLowerCase() + ':' + this.backend.invoice.receiveAddress + '?amount=' + this.backend.getAmount()"
                 [width]="256"
                 [errorCorrectionLevel]="'M'"
                 [elementType]="'svg'"
@@ -42,7 +42,7 @@
             <h3>{{ this.backend.invoice?.receiveAddress }}</h3>
         </span>
         <span id="amount" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">Amount
-            <h3>{{ this.backend.getAmount() }} BTC <span class="price"> | {{ this.backend.invoice.totalPrice!.toFixed(2) }} {{ this.backend.currencyPrefix() }}</span></h3>
+            <h3>{{ this.backend.getAmount() }} {{ this.backend.invoice.paymentMethod }} <span class="price"> | {{ this.backend.invoice.totalPrice!.toFixed(2) }} {{ this.backend.currencyPrefix() }}</span></h3>
         </span>
         <span id="status" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">Status
             <h3>

@@ -66,7 +66,7 @@ export interface IInvoice {
 })
 export class BackendService {
 
-  SERVER_URL = 'http://localhost:2009';
+  SERVER_URL = 'http://192.168.178.26:2009';
 
   // Fill with empty data
   invoice: IInvoice = {
@@ -138,7 +138,7 @@ export class BackendService {
   setInvoice(selector: string): Promise<IInvoice> {
     return new Promise(async (resolve, reject) => {
       if (selector === undefined || selector === 'undefined' || selector === '') {
-        reject();
+        reject('There is no selector. Please set one before calling setInvoice(...)');
         return;
       }
 
@@ -147,7 +147,6 @@ export class BackendService {
         responseType: 'json'
       }).toPromise().then((invoice) => {
         this.invoice = invoice as IInvoice;
-        this.invoiceUpdate.next(this.invoice);
         resolve(this.invoice);
       }).catch(err => {
         reject(err);
@@ -224,7 +223,14 @@ export class BackendService {
   /**
    * @returns Path to icon in assets folder
    */
-  getIcon(unit: CryptoUnits): string {
+  getIcon(unit?: CryptoUnits): string {
+    if (unit === undefined) {
+      if (this.invoice.paymentMethod === undefined) {
+        return 'assets/Bitcoin.svg';
+      }
+
+      unit = this.invoice.paymentMethod;
+    }
     switch (unit) {
       case CryptoUnits.BITCOIN:
         return 'assets/Bitcoin.svg';
@@ -241,7 +247,15 @@ export class BackendService {
     }
   }
 
-  findCryptoBySymbol(symbol: string): string | null {
+  findCryptoBySymbol(symbol?: string): string | null {
+    if (symbol === undefined) {
+      if (this.invoice.paymentMethod === undefined) {
+        return null;
+      }
+
+      symbol = this.invoice.paymentMethod;
+    }
+
     for (const coin in CryptoUnits) {
       // @ts-ignore: This actually works but I think it's too hacky for TS. Allow me this one, please.
       if (CryptoUnits[coin] === symbol.toUpperCase()) {

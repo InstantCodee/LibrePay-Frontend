@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { PushNotificationsService } from 'ng-push-ivy';
 
-import { BackendService, CryptoUnits } from '../backend.service';
+import { BackendService, CryptoUnits, PaymentStatus } from '../backend.service';
 import { StateService } from '../state.service';
 
 @Component({
@@ -15,6 +16,7 @@ export class PaymentComponent implements OnInit {
   confirmations = 0;
   status: string;
   ready = false;
+  emittedNotification = false;
 
   // XYZ class (will be xyz-out if cart is shown for example)
   xyzClass: string;
@@ -23,7 +25,8 @@ export class PaymentComponent implements OnInit {
   constructor(
     public backend: BackendService,
     public state: StateService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private push: PushNotificationsService
   ) {
     this.status = this.backend.getStatus();
     this.hideMain = false;
@@ -49,9 +52,31 @@ export class PaymentComponent implements OnInit {
           this.xyzClass = 'xyz-in';
         }, 600);
       }
-    })
+    });
 
     this.backend.invoiceUpdate.subscribe(newInvoice => {
+      if (newInvoice?.status === PaymentStatus.UNCONFIRMED) {
+        this.push.requestPermission();
+      }
+      if (newInvoice?.status === PaymentStatus.DONE) {
+        if (this.emittedNotification) { return; }
+        this.push.create('Transaction confirmed!', {
+          body: 'Your transaction just got confirmed.',
+          lang: 'en',
+          icon: this.backend.getIcon(),
+          sticky: true,
+          vibrate: [250, 400, 250],
+          sound: 'assets/pay_success.mp3'
+        }).subscribe(
+          (res: any) => {
+            console.log('Success');
+          },
+          (err: any) => {
+            console.error('Error:', err);
+          }
+        );
+        this.emittedNotification = true;
+      }
       this.status = this.backend.getStatus();
     });
   }
@@ -61,7 +86,8 @@ export class PaymentComponent implements OnInit {
   }
 
   async get(): Promise<void> {
-    await this.backend.setInvoice(this.paymentSelector);
+    const res = await this.backend.setInvoice(this.paymentSelector);
+    this.status = this.backend.getStatus();
     this.backend.getConfirmation().catch();
     this.ready = true;
   }

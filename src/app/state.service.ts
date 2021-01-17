@@ -14,13 +14,13 @@ export class StateService {
 
   constructor(private backend: BackendService) {
     this.showCart = new BehaviorSubject<boolean>(false);
-    
+
     this.backend.invoiceUpdate.subscribe(invoice => {
       this.showCart.next(false);  // Hide cart if status changes
     });
   }
 
-  toggleCart() {
+  toggleCart(): void {
     this.showCart.next(!this.showCart.value);
   }
 }

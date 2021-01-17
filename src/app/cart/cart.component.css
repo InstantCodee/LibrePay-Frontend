@@ -48,3 +48,8 @@
     text-align: right;
     margin: auto;
 }
+
+.quantity {
+    font-weight: lighter;
+    font-size: 10pt;
+}
