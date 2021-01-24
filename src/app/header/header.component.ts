@@ -21,7 +21,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  cancel() {
+  cancel(): void {
     if (!this.startCancelling) {
       this.startCancelling = true;
       const animation = setInterval(() => {
@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit {
         margin-left: 16px;
         transform: scale(1.1);
         `;
-        
+
         if (this.cancelProgress > 100) {
           clearInterval(animation);
           this.startCancelling = false;

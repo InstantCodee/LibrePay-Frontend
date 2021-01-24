@@ -17,16 +17,30 @@
     height: 359px;
 }
 
-.cart ul li {
+.item {
     display: grid;
     padding: 1rem;
     grid-template-columns: 64px 1fr auto;
     grid-column-gap: 1rem;
     border-radius: 12px;
+    transition: .2s !important;
 }
 
-.cart ul li:nth-child(even) {
+.item:hover {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.item:hover img {
+    transform: rotate(5deg);
+}
+
+.item:nth-child(even) {
     background-color: #292929;
+}
+
+.item:nth-child(even):hover img {
+    transform: rotate(-5deg);
 }
 
 .image {
@@ -35,6 +49,7 @@
     padding: 0;
     margin: 0;
     border-radius: 8px;
+    transition: .25s ease-out;
 }
 
 .name {

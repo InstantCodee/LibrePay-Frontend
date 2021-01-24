@@ -6,6 +6,7 @@
     background-color: #1c1c1c;
     border-radius: 8px;
     transform: translateY(-8px);
+    overflow: hidden;
 }
 
 /* Apply effect when invoice expired */
@@ -91,15 +92,20 @@
 /* Data */
 .main .data {
     display: grid;
-    grid-template-columns: 1fr 50px;
-    grid-template-rows: 1fr 4rem 4rem 4rem 1fr;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto auto auto 1fr;
+    row-gap: 10px;
+    width: 500px;
 }
-.main #target {
+
+#target {
     grid-row: 2;
 }
+
 #amount {
     grid-row: 3;
 }
+
 #status {
     grid-row: 4;
 }

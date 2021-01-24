@@ -85,6 +85,19 @@ export class PaymentComponent implements OnInit {
     this.backend.setPaymentMethod(coin);
   }
 
+  getReceiveAddress(): string {
+    const address = this.backend.invoice.receiveAddress;
+    if (address === undefined) {
+      return '';
+    }
+
+    if (address.length > 35) {
+      return address.slice(0, -(address.length - 35)) + '...';
+    }
+
+    return address;
+  }
+
   async get(): Promise<void> {
     const res = await this.backend.setInvoice(this.paymentSelector);
     this.status = this.backend.getStatus();

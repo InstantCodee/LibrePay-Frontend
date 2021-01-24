@@ -39,7 +39,7 @@
     <div class="data">
         <!-- Payment data -->
         <span id="target" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">Send to
-            <h3>{{ this.backend.invoice?.receiveAddress }}</h3>
+            <h3>{{ getReceiveAddress() }}</h3>
         </span>
         <span id="amount" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">Amount
             <h3>{{ this.backend.getAmount() }} {{ this.backend.invoice.paymentMethod }} <span class="price"> | {{ this.backend.invoice.totalPrice!.toFixed(2) }} {{ this.backend.currencyPrefix() }}</span></h3>

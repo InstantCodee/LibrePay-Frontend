@@ -1,6 +1,6 @@
-<div class="cart" xyz="stagger-0.5 fade-100% down-1 ease-ease" >
+<div class="cart" xyz="stagger-0.5 fade-100% down-1 ease-ease">
     <ul>
-        <li *ngFor="let item of this.backend.invoice.cart;let indexOfelement=index;" [ngClass]="{'xyz-in': this.state.showCart.value, 'xyz-out': !this.state.showCart.value}">
+        <li *ngFor="let item of this.backend.invoice.cart;let indexOfelement=index;" class="item" [ngClass]="{'xyz-in': this.state.showCart.value, 'xyz-out': !this.state.showCart.value}">
             <img [src]="item.image" class="image">
             <h5 class="name">{{ item.name }}<span class="quantity" *ngIf="item.quantity !== 1"> x{{ item.quantity }}</span></h5>
             <span class="price"><b>{{ (item.price * item.quantity).toFixed(2) }} {{ this.backend.currencyPrefix() }}</b><br>

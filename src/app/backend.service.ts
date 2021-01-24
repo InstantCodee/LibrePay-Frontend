@@ -269,9 +269,13 @@ export class BackendService {
    * @returns The price to pay by cryptocurrency;
    */
   getAmount(): string | undefined {
-    return this.invoice?.paymentMethods.find(item => {
+    const amount = this.invoice?.paymentMethods.find(item => {
       return item.method === this.invoice.paymentMethod;
-    })?.amount.toFixed(8);
+    })?.amount.toString();
+
+    if (amount === undefined) { return '0.00'; }
+
+    return amount;
   }
 
   /**
@@ -279,12 +283,12 @@ export class BackendService {
    * @param prodcut Index of product in cart
    */
   calculateCryptoPrice(productNr: number): number {
-    if (this.invoice.cart === undefined) return 0;
-    if (this.invoice.paymentMethod === undefined) return 0;    
+    if (this.invoice.cart === undefined) { return 0; }
+    if (this.invoice.paymentMethod === undefined) { return 0; }
 
     const product = this.invoice.cart[productNr];
-    const exRate = this.invoice.paymentMethods.find(method => { return method.method === this.invoice.paymentMethod })?.exRate;
-    if (exRate === undefined) return 0;
+    const exRate = this.invoice.paymentMethods.find(method => method.method === this.invoice.paymentMethod)?.exRate;
+    if (exRate === undefined) { return 0; }
 
     return product.quantity * product.price / exRate;
   }
