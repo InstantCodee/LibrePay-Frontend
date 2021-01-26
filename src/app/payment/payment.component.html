@@ -1,7 +1,7 @@
 <!--
     Select payment method
 -->
-<div class="payment request" xyz="stagger-2 fade-100% down-1" *ngIf="this.backend.isInvoiceRequested()">
+<div class="payment" xyz="stagger-2 fade-100% down-1" *ngIf="this.backend.isInvoiceRequested()">
     <h3 id="title">Choose your<br>payment method</h3>
     <p id="price">{{ this.backend.invoice.totalPrice!.toFixed(2) }} {{ this.backend.currencyPrefix() }}</p>
 
@@ -38,28 +38,22 @@
 
     <div class="data">
         <!-- Payment data -->
-        <span id="target" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">Send to
+        <img class="clipboard clipboard-target" src="assets/clipboard.svg" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
+        <span id="target" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
+            Send to
             <h3>{{ getReceiveAddress() }}</h3>
         </span>
+
+        <img class="clipboard clipboard-amount" src="assets/clipboard.svg" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
         <span id="amount" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">Amount
             <h3>{{ this.backend.getAmount() }} {{ this.backend.invoice.paymentMethod }} <span class="price"> | {{ this.backend.invoice.totalPrice!.toFixed(2) }} {{ this.backend.currencyPrefix() }}</span></h3>
         </span>
+
         <span id="status" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">Status
             <h3>
                 {{ status }}
                 <div class="loader" *ngIf="this.status === 'Unconfirmed'">
-                    <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                       width="32px" height="32px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-                    <path fill="#f7a12f" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
-                      <animateTransform attributeType="xml"
-                        attributeName="transform"
-                        type="rotate"
-                        from="0 25 25"
-                        to="360 25 25"
-                        dur="1s"
-                        repeatCount="indefinite"/>
-                      </path>
-                    </svg>
+                    <img src="assets/loader.svg">
                   </div>
             </h3>
             <small *ngIf="status === 'Unconfirmed'">Confirmations: {{ this.backend.confirmations }}</small>

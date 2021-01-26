@@ -28,10 +28,6 @@
     to { filter: blur(10px) }
 }
 
-.request {
-    transform: translateY(-40px);
-}
-
 .loader {
     position: absolute;
     display: inline;
@@ -42,7 +38,7 @@
 .main {
     display: grid;
     height: 400px;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: .8fr 1fr;
 }
 
 .qr {
@@ -92,13 +88,50 @@
 /* Data */
 .main .data {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 30px 1fr;
     grid-template-rows: 1fr auto auto auto 1fr;
+    column-gap: 10px;
     row-gap: 10px;
     width: 500px;
 }
 
+.clipboard {
+    cursor: pointer;
+    margin: auto auto;
+    grid-column: 1;
+}
+
+.clipboard-target {
+    grid-row: 2;
+}
+.clipboard-amount {
+    grid-row: 3;
+}
+/*.clipboard:hover {
+    animation: clipboard-clicked .5s linear;
+}
+
+@keyframes clipboard-clicked {
+    30% {
+        transform: scale(1.2);
+    }
+    50% {
+        transform: scale(1.2) rotate(5deg);
+    }
+    70% {
+        transform: scale(1.2) rotate(-5deg);
+    }
+    100% {
+        transform: scale(1);
+    }
+}*/
+
+#target, #amount, #status {
+    grid-column: 2;
+}
+
 #target {
+    user-select: none;
     grid-row: 2;
 }
 
@@ -135,8 +168,7 @@
 #list {
     overflow-y: scroll;
     scroll-behavior: smooth;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    height: 315px;
     margin: 0;
     padding: 0;
 }
