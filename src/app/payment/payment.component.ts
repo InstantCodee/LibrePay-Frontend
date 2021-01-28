@@ -18,6 +18,9 @@ export class PaymentComponent implements OnInit {
   ready = false;
   emittedNotification = false;
 
+  formatedTime = '';  // Time that will be shown to the user
+  progressTime = 0;   // This value will be used to show the progressbar
+
   // XYZ class (will be xyz-out if cart is shown for example)
   xyzClass: string;
   hideMain: boolean;
@@ -78,6 +81,8 @@ export class PaymentComponent implements OnInit {
         this.emittedNotification = true;
       }
       this.status = this.backend.getStatus();
+
+      this.updateRemainingTime();
     });
   }
 
@@ -96,6 +101,19 @@ export class PaymentComponent implements OnInit {
     }
 
     return address;
+  }
+
+  updateRemainingTime() {
+    setInterval(() => {
+      const createdAt = new Date(this.backend.invoice.createdAt);
+      const dueBy = new Date(this.backend.invoice.dueBy);
+      const timeTotal = Math.abs(dueBy.getTime() - createdAt.getTime());
+      const timeLeft = Math.abs(dueBy.getTime() - Date.now());
+      const timeLeftDate = new Date(timeLeft);
+
+      this.progressTime = timeLeft / timeTotal * 1000;
+      this.formatedTime = `${timeLeftDate.getMinutes()}:${timeLeftDate.getSeconds()} left`;
+    }, 500);
   }
 
   async get(): Promise<void> {

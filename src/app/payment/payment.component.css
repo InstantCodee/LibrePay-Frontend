@@ -107,7 +107,7 @@
 .clipboard-amount {
     grid-row: 3;
 }
-/*.clipboard:hover {
+.clipboard-click {
     animation: clipboard-clicked .5s linear;
 }
 
@@ -124,7 +124,7 @@
     100% {
         transform: scale(1);
     }
-}*/
+}
 
 #target, #amount, #status {
     grid-column: 2;
@@ -209,4 +209,26 @@
 #list li h4 {
     grid-row: 2;
     grid-column: 2;
+}
+
+.progress {
+    position: absolute;
+    bottom: -11px;
+    left: 0;
+    width: 100%;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.progress div {
+    vertical-align: middle;
+    align-items: center;
+}
+
+.progress div span {
+    padding-bottom: .5rem;
+}
+
+.progress div * {
+    padding: .2rem;
 }

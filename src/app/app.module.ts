@@ -14,6 +14,7 @@ import { AppRoutingModule } from 'src/routes';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { CartComponent } from './cart/cart.component';
 import { PushNotificationsModule } from 'ng-push-ivy';
+import { ClipboardModule } from 'ngx-clipboard';
 
 const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
 
@@ -33,7 +34,8 @@ const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
     HttpClientModule,
     AppRoutingModule,
     SocketIoModule.forRoot(config),
-    PushNotificationsModule
+    PushNotificationsModule,
+    ClipboardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

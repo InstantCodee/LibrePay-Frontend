@@ -52,13 +52,12 @@ export interface IInvoice {
   cart?: ICart[];
   totalPrice?: number;
   currency: string;
-  dueBy: Date;
+  dueBy: string;
   status?: PaymentStatus;
   email?: string;
   successUrl: string;
   cancelUrl: string;
-  createdAt?: number;
-
+  createdAt: string;
 }
 
 @Injectable({
@@ -74,9 +73,10 @@ export class BackendService {
     paymentMethods: [],
     receiveAddress: '',
     currency: 'USD',
-    dueBy: new Date(),
+    dueBy: '',
     successUrl: '',
-    cancelUrl: ''
+    cancelUrl: '',
+    createdAt: ''
   };
   invoiceUpdate: BehaviorSubject<IInvoice | null>;
 

@@ -19,7 +19,7 @@
 <!--
     Main view
 -->
-<div class="payment main" xyz="stagger-0.5 fade-100% down-1 ease-ease" 
+<div class="payment main" xyz="stagger-0.5 fade-100% down-1 ease-ease"
     *ngIf="!this.backend.isInvoiceRequested() && ready && !hideMain"
     [ngClass]="{invalid: status === 'Expired' || status === 'Paid too little' || status === 'Cancelled by user'}">
 
@@ -38,13 +38,23 @@
 
     <div class="data">
         <!-- Payment data -->
-        <img class="clipboard clipboard-target" src="assets/clipboard.svg" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
+        <img
+            ngxClipboard
+            [cbContent]="this.backend.invoice.receiveAddress"
+            class="clipboard clipboard-target"
+            src="assets/clipboard.svg"
+            [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
         <span id="target" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
             Send to
             <h3>{{ getReceiveAddress() }}</h3>
         </span>
 
-        <img class="clipboard clipboard-amount" src="assets/clipboard.svg" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
+        <img
+            ngxClipboard
+            [cbContent]="this.backend.getAmount()"
+            class="clipboard clipboard-amount"
+            src="assets/clipboard.svg"
+            [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
         <span id="amount" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">Amount
             <h3>{{ this.backend.getAmount() }} {{ this.backend.invoice.paymentMethod }} <span class="price"> | {{ this.backend.invoice.totalPrice!.toFixed(2) }} {{ this.backend.currencyPrefix() }}</span></h3>
         </span>
@@ -58,6 +68,15 @@
             </h3>
             <small *ngIf="status === 'Unconfirmed'">Confirmations: {{ this.backend.confirmations }}</small>
         </span>
+    </div>
+    <div class="progress" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}" *ngIf="status === 'Pending'">
+        <div>
+            <img src="assets/clock.svg">
+            <span>{{ formatedTime }}</span>
+        </div>
+        <svg viewBox="0, 0, 1000, 10">
+            <rect [attr.width]='progressTime' height="5" fill="#fff"></rect>
+        </svg>
     </div>
 </div>
 
