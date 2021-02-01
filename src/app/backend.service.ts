@@ -154,6 +154,14 @@ export class BackendService {
     });
   }
 
+  setInvoiceExpired() {
+    // Don't set expired if status is not pending
+    if (this.invoice.status !== PaymentStatus.PENDING) { return; }
+
+    this.invoice.status = PaymentStatus.TOOLATE;
+    this.invoiceUpdate.next(this.invoice);
+  }
+
   /**
    * This will notify the backend that the user just cancelled the payment.
    */

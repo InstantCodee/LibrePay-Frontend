@@ -223,10 +223,11 @@
 .progress div {
     vertical-align: middle;
     align-items: center;
+    padding-bottom: .5rem;
 }
 
-.progress div span {
-    padding-bottom: .5rem;
+.progress div img {
+    transform: translateY(10px);
 }
 
 .progress div * {

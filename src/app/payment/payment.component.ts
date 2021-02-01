@@ -103,17 +103,26 @@ export class PaymentComponent implements OnInit {
     return address;
   }
 
-  updateRemainingTime() {
+  updateRemainingTime(): void {
     setInterval(() => {
       const createdAt = new Date(this.backend.invoice.createdAt);
       const dueBy = new Date(this.backend.invoice.dueBy);
+
       const timeTotal = Math.abs(dueBy.getTime() - createdAt.getTime());
       const timeLeft = Math.abs(dueBy.getTime() - Date.now());
       const timeLeftDate = new Date(timeLeft);
+      const timeLeftFormat = timeLeftDate.getMinutes() + ':' +
+        (timeLeftDate.getSeconds() < 10 ? '0' + timeLeftDate.getSeconds() : timeLeftDate.getSeconds());
 
       this.progressTime = timeLeft / timeTotal * 1000;
-      this.formatedTime = `${timeLeftDate.getMinutes()}:${timeLeftDate.getSeconds()} left`;
-    }, 500);
+      this.formatedTime = `${timeLeftFormat} left`;
+
+      // Flag invoice as expired in advance
+      if (timeLeftDate.getMinutes() === 0 && timeLeftDate.getSeconds() === 0) {
+        this.formatedTime = '00:00 left';
+        this.backend.setInvoiceExpired();
+      }
+    }, 200);
   }
 
   async get(): Promise<void> {
