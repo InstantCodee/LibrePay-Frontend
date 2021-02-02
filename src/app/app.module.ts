@@ -7,6 +7,7 @@ import { PaymentComponent } from './payment/payment.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { PayComponent } from './pay/pay.component';
 import { HelloComponent } from './hello/hello.component';
+import { SocketIoModule } from 'ngx-socket-io';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from 'src/routes';
 import { NotFoundComponent } from './not-found/not-found.component';
