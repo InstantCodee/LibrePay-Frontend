@@ -19,6 +19,8 @@ import { LoginComponent } from './dashboard/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { OverviewComponent } from './dashboard/overview/overview.component';
 import { DashboardHeaderComponent } from './dashboard/header/header.component';
+import { ChartComponent } from './dashboard/chart/chart.component';
+import { ChartsModule } from 'ng2-charts';
 
 const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
 
@@ -34,7 +36,8 @@ const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
     DashboardComponent,
     LoginComponent,
     OverviewComponent,
-    DashboardHeaderComponent
+    DashboardHeaderComponent,
+    ChartComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,8 @@ const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
     PushNotificationsModule,
     ClipboardModule,
     FormsModule,
-    SocketIoModule.forRoot(config)
+    SocketIoModule.forRoot(config),
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
