@@ -65,7 +65,7 @@ export interface IInvoice {
 })
 export class BackendService {
 
-  SERVER_URL = 'http://192.168.178.26:2009';
+  SERVER_URL = 'http://localhost:2009';
 
   // Fill with empty data
   invoice: IInvoice = {
@@ -107,7 +107,7 @@ export class BackendService {
   /**
    * Subscribe to the real-time status of the selected invoice.
    */
-  subscribeTo(selector: string): void {
+  subscribeTo(): void {
     this.socket.on('subscribe', (status: boolean) => {
       if (status) {
         this.updateInvoice();
@@ -120,7 +120,7 @@ export class BackendService {
       this.confirmations = update.count;
     });
 
-    this.socket.emit('subscribe', { selector });
+    this.socket.emit('subscribe', { selector: this.invoice.selector });
   }
 
   /**
@@ -137,6 +137,8 @@ export class BackendService {
    */
   setInvoice(selector: string): Promise<IInvoice> {
     return new Promise(async (resolve, reject) => {
+      console.log('Sel.:', selector);
+      
       if (selector === undefined || selector === 'undefined' || selector === '') {
         reject('There is no selector. Please set one before calling setInvoice(...)');
         return;

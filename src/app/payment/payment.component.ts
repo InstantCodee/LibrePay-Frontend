@@ -39,7 +39,6 @@ export class PaymentComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.paymentSelector = params.id;
-      this.backend.subscribeTo(this.paymentSelector);
       this.get();
     });
 
@@ -126,7 +125,10 @@ export class PaymentComponent implements OnInit {
   }
 
   async get(): Promise<void> {
+    console.log('Selector:', this.paymentSelector);
+    
     const res = await this.backend.setInvoice(this.paymentSelector);
+    this.backend.subscribeTo();
     this.status = this.backend.getStatus();
     this.backend.getConfirmation().catch();
     this.ready = true;
