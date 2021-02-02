@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DashboardService } from 'src/app/dashboard.service';
 
 @Component({
   selector: 'app-overview',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OverviewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dashboard: DashboardService) { }
 
   ngOnInit(): void {
+    if (this.dashboard.user === undefined) {
+      this.dashboard.login('admin', 'password');
+    }
   }
 
 }
