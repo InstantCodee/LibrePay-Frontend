@@ -31,7 +31,7 @@ export class PaymentComponent implements OnInit {
     private route: ActivatedRoute,
     private push: PushNotificationsService
   ) {
-    this.status = this.backend.getStatus();
+    this.status = this.backend.getStatusString();
     this.hideMain = false;
     this.xyzClass = 'xyz-in';
   }
@@ -80,7 +80,7 @@ export class PaymentComponent implements OnInit {
         );
         this.emittedNotification = true;
       }
-      this.status = this.backend.getStatus();
+      this.status = this.backend.getStatusString();
 
       this.updateRemainingTime();
     });
@@ -127,7 +127,7 @@ export class PaymentComponent implements OnInit {
 
   async get(): Promise<void> {
     const res = await this.backend.setInvoice(this.paymentSelector);
-    this.status = this.backend.getStatus();
+    this.status = this.backend.getStatusString();
     this.backend.getConfirmation().catch();
     this.ready = true;
   }

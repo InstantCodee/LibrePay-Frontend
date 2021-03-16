@@ -48,6 +48,7 @@ export interface IInvoice {
   paymentMethod?: CryptoUnits;
   receiveAddress?: string;
   transcationHash?: string;
+  transactionLink?: string;
   confirmation?: number;
   cart?: ICart[];
   totalPrice?: number;
@@ -55,9 +56,11 @@ export interface IInvoice {
   dueBy: string;
   status?: PaymentStatus;
   email?: string;
-  successUrl: string;
-  cancelUrl: string;
+  successUrl?: string;
+  cancelUrl?: string;
+  redirectTo: string;
   createdAt: string;
+  testnet: boolean;
 }
 
 @Injectable({
@@ -74,9 +77,9 @@ export class BackendService {
     receiveAddress: '',
     currency: 'USD',
     dueBy: '',
-    successUrl: '',
-    cancelUrl: '',
-    createdAt: ''
+    createdAt: '',
+    redirectTo: '',
+    testnet: false
   };
   invoiceUpdate: BehaviorSubject<IInvoice | null>;
 
@@ -91,6 +94,9 @@ export class BackendService {
     this.invoiceUpdate = new BehaviorSubject<IInvoice | null>(null);
     this.socket.on('status', (data: any) => {
       console.log('Status has been updated to: ', data);
+      if (data > PaymentStatus.DONE) {
+        window.location.href = this.invoice.redirectTo;
+      }
       this.invoice.status = data;
       this.invoiceUpdate.next(this.invoice);
     });
@@ -301,7 +307,7 @@ export class BackendService {
     return product.quantity * product.price / exRate;
   }
 
-  getStatus(): string {
+  getStatusString(): string {
     switch (this.invoice?.status) {
       case PaymentStatus.PENDING:
         return 'Pending';

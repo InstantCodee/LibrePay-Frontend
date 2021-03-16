@@ -61,10 +61,13 @@
 
         <span id="status" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">Status
             <h3>
-                {{ status }}
+                <p>{{ status }}</p>
                 <div class="loader" *ngIf="this.status === 'Unconfirmed'">
                     <img src="assets/loader.svg">
-                  </div>
+                </div>
+                <div *ngIf="this.status === 'Paid' && this.backend.invoice.transactionLink !== undefined">
+                    <a [href]="this.backend.invoice.transactionLink" target="_blank" class="viewtx">View transaction</a>
+                </div>
             </h3>
             <small *ngIf="status === 'Unconfirmed'">Confirmations: {{ this.backend.confirmations }}</small>
         </span>

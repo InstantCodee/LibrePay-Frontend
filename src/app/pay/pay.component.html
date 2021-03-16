@@ -6,6 +6,10 @@
     <div class="cube"></div>
     <div class="cube"></div>
 </div>
+<div class="testnet-warning" *ngIf="this.backend.invoice.testnet">
+    <img src="assets/ico-warning.svg">
+    <p>This invoice has to be paid with testnet coins and has <b>no real world value</b>!</p>
+</div>
 <div class="content" [ngClass]="{smaller: this.backend.isInvoiceRequested()}">
     <app-header id="header"></app-header>
     <app-payment id="payment"></app-payment>

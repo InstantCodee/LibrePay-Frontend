@@ -233,3 +233,10 @@
 .progress div * {
     padding: .2rem;
 }
+
+.viewtx {
+    line-height: 1.2;
+    font-weight: 300;
+    font-size: 11pt;
+    text-decoration: none;
+}
