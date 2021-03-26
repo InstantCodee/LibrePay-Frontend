@@ -20,7 +20,9 @@ import { FormsModule } from '@angular/forms';
 import { OverviewComponent } from './dashboard/overview/overview.component';
 import { DashboardHeaderComponent } from './dashboard/header/header.component';
 import { ChartComponent } from './dashboard/chart/chart.component';
-import { ChartsModule } from 'ng2-charts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SummaryComponent } from './dashboard/summary/summary.component';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
 
@@ -37,7 +39,8 @@ const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
     LoginComponent,
     OverviewComponent,
     DashboardHeaderComponent,
-    ChartComponent
+    ChartComponent,
+    SummaryComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +52,10 @@ const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
     ClipboardModule,
     FormsModule,
     SocketIoModule.forRoot(config),
-    ChartsModule
+    BrowserAnimationsModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
