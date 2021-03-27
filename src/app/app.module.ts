@@ -23,6 +23,8 @@ import { ChartComponent } from './dashboard/chart/chart.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SummaryComponent } from './dashboard/summary/summary.component';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { NgSelectModule } from '@ng-select/ng-select';
+
 
 const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
 
@@ -51,6 +53,7 @@ const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
     PushNotificationsModule,
     ClipboardModule,
     FormsModule,
+    NgSelectModule,
     SocketIoModule.forRoot(config),
     BrowserAnimationsModule,
     NgxEchartsModule.forRoot({
