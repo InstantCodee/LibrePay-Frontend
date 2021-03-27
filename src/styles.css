@@ -1,14 +1,18 @@
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
 /* You can add global styles to this file, and also import other style files */
+
 * {
     font-family: 'Inter', sans-serif;
 }
 
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
 }
 
-:host{
+:host {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }

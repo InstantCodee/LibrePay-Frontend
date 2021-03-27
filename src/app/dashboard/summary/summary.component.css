@@ -27,11 +27,26 @@
     font-family: 'Inter';
 }
 
-.stoke {
-    width: 39px;
-    height: 0px;
-    left: 272px;
-    top: 182px;
-    border: 1px solid #FFFFFF;
-    transform: rotate(90deg);
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-template-areas: "sum dropdown void1 void" ". . . ." ". . . .";
+}
+
+.sum {
+    grid-area: sum;
+}
+
+.void {
+    grid-area: void;
+}
+
+.dropdown {
+    grid-area: dropdown;
+}
+
+.void1 {
+    grid-area: void1;
 }

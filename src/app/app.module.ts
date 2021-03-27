@@ -23,6 +23,8 @@ import { ChartComponent } from './dashboard/chart/chart.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SummaryComponent } from './dashboard/summary/summary.component';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { NgSelectModule } from '@ng-select/ng-select';
+
 
 @NgModule({
   declarations: [
@@ -48,6 +50,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
     PushNotificationsModule,
     ClipboardModule,
     FormsModule,
+    NgSelectModule,
     BrowserAnimationsModule,
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts')
