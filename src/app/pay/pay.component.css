@@ -2,6 +2,8 @@
     position: fixed;
     display: inline-flex;
     top: 0;
+    left: 0;
+    right: 0;
     padding: 0.5rem;
     padding-left: 2rem;
     padding-right: 2rem;
@@ -11,16 +13,17 @@
     border-top-right-radius: 0;
     border-top-left-radius: 0;
     border-bottom: 5px solid rgb(147, 39, 0);
-    left: 0;
-    right: 0;
     margin-left: auto;
     margin-right: auto;
     width: fit-content;
-    animation: testnet-warning .5s ease;
+    animation: testnet-warning 0.5s ease;
+    box-shadow: 0 2.8px 1.7px rgba(255, 48, 48, 0.13), 0 6.7px 4px rgba(255, 48, 48, 0.093),
+        0 12.5px 7.5px rgba(255, 48, 48, 0.077), 0 22.3px 13.4px rgba(255, 48, 48, 0.065),
+        0 41.8px 25.1px rgba(255, 48, 48, 0.053), 0 100px 60px rgba(255, 48, 48, 0.037);
 }
 
 .testnet-warning img {
-    padding-right: .5rem;
+    padding-right: 0.5rem;
 }
 
 @keyframes testnet-warning {
@@ -53,8 +56,9 @@
     /* box-shadow: 1px 1px 112px 23px rgba(0,0,0,0.75); */
 }
 
-#header, #payment {
-    transition: .3s ease;
+#header,
+#payment {
+    transition: 0.3s ease;
 }
 
 .smaller {
@@ -71,7 +75,6 @@
 .content * {
     width: 100%;
 }
-
 
 /*
     BACKGROUND ANIMATION

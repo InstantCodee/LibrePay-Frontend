@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from '../environments/environment';
 
 /*
  * The following interfaces are copied from the backend.
@@ -68,7 +69,7 @@ export interface IInvoice {
 })
 export class BackendService {
 
-  SERVER_URL = 'http://192.168.178.26:2009';
+  SERVER_URL = environment.API_URL;
 
   // Fill with empty data
   invoice: IInvoice = {
@@ -85,12 +86,14 @@ export class BackendService {
 
   // This value is s
   confirmations: number;
+  errorLoadingInvoice: boolean;
 
   constructor(
     private socket: Socket,
     private http: HttpClient
   ) {
     this.confirmations = 0;
+    this.errorLoadingInvoice = false;
     this.invoiceUpdate = new BehaviorSubject<IInvoice | null>(null);
     this.socket.on('status', (data: any) => {
       console.log('Status has been updated to: ', data);
@@ -153,9 +156,11 @@ export class BackendService {
         responseType: 'json'
       }).toPromise().then((invoice) => {
         this.invoice = invoice as IInvoice;
+        this.errorLoadingInvoice = false;
         resolve(this.invoice);
       }).catch(err => {
-        reject(err);
+        this.errorLoadingInvoice = true;
+        reject('Unable to fetch invoice information: ' + err.message);
       });
     });
   }

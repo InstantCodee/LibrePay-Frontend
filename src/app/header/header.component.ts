@@ -45,4 +45,8 @@ export class HeaderComponent implements OnInit {
     this.backend.cancelInvoice();
   }
 
+  gotoMerchant() {
+    window.location.href = this.backend.invoice.redirectTo;
+  }
+
 }
