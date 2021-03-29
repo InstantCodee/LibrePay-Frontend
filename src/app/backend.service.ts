@@ -1,9 +1,8 @@
-import { getCurrencySymbol } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
-import { BehaviorSubject } from 'rxjs';
-import { environment } from '../environments/environment';
+import {getCurrencySymbol} from '@angular/common';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {environment} from '../environments/environment';
 
 /*
  * The following interfaces are copied from the backend.
@@ -26,22 +25,10 @@ export interface ICart {
   image: string;
   quantity: number;
 }
-
 export interface IPaymentMethod {
   method: CryptoUnits;
   amount: number;
   exRate: number;
-}
-
-export enum PaymentStatus {
-  TOOLITTLE = -3,
-  TOOLATE = -2,
-  CANCELLED = -1,
-  REQUESTED = 0,
-  PENDING = 1,
-  UNCONFIRMED = 2,
-  DONE = 3,
-  TOOMUCH = 4
 }
 export interface IInvoice {
   selector: string;
@@ -63,6 +50,16 @@ export interface IInvoice {
   createdAt: string;
   testnet: boolean;
 }
+export enum PaymentStatus {
+  TOOLITTLE = -3,
+  TOOLATE = -2,
+  CANCELLED = -1,
+  REQUESTED = 0,
+  PENDING = 1,
+  UNCONFIRMED = 2,
+  DONE = 3,
+  TOOMUCH = 4
+}
 
 @Injectable({
   providedIn: 'root'
@@ -83,53 +80,50 @@ export class BackendService {
     testnet: false
   };
   invoiceUpdate: BehaviorSubject<IInvoice | null>;
+  events: EventSource | undefined;
 
   // This value is s
   confirmations: number;
   errorLoadingInvoice: boolean;
 
   constructor(
-    private socket: Socket,
     private http: HttpClient
   ) {
     this.confirmations = 0;
     this.errorLoadingInvoice = false;
     this.invoiceUpdate = new BehaviorSubject<IInvoice | null>(null);
-    this.socket.on('status', (data: any) => {
-      console.log('Status has been updated to: ', data);
-      if (data > PaymentStatus.DONE) {
-        window.location.href = this.invoice.redirectTo;
-      }
-      this.invoice.status = data;
-      this.invoiceUpdate.next(this.invoice);
-    });
-    this.socket.on('subscribe', (success: boolean) => {
-      if (success) { console.log('We\'re getting the progress of this invoice!'); }
-      else { console.log('Subscribtion failed'); }
-    });
-  }
-
-  getSocket(): Socket {
-    return this.socket;
   }
 
   /**
    * Subscribe to the real-time status of the selected invoice.
    */
   subscribeTo(selector: string): void {
-    this.socket.on('subscribe', (status: boolean) => {
-      if (status) {
-        this.updateInvoice();
-        console.log('Successfully subscribed to this invoice');
-      }
-      else { console.log('Failed to subscribe'); }
+    // If there is already a event, close it.
+    if (this.events !== undefined) {
+      this.events.close();
+    }
+
+    this.events = new EventSource(`${this.SERVER_URL}/invoice/${selector}/events`);
+
+    this.events.onopen = event => {
+      console.debug('Connection to event stream is open. Awaiting incoming events ...');
+    };
+
+    this.events.addEventListener('confirmationUpdate', (event) => {
+      // Somehow the typescript definition doesn't have the data property. So this hack should resolve this issue.
+      const { data } = (event as CustomEvent);
+
+      this.confirmations = JSON.parse(data).count;
+      console.debug('Received count:', JSON.parse(data));
     });
 
-    this.socket.on('confirmationUpdate', (update: any) => {
-      this.confirmations = update.count;
-    });
+    this.events.addEventListener('status', (event) => {
+      const { data } = (event as CustomEvent);
 
-    this.socket.emit('subscribe', { selector });
+      this.invoice.status = JSON.parse(data).status;
+      this.invoiceUpdate.next(this.invoice);
+      console.debug('Received new status:', JSON.parse(data));
+    });
   }
 
   /**
@@ -165,6 +159,7 @@ export class BackendService {
     });
   }
 
+  // tslint:disable-next-line:typedef
   setInvoiceExpired() {
     // Don't set expired if status is not pending
     if (this.invoice.status !== PaymentStatus.PENDING) { return; }
@@ -344,4 +339,8 @@ export class BackendService {
   isInvoiceRequested(): boolean {
     return this.invoice?.status === PaymentStatus.REQUESTED;
   }
+}
+
+interface CustomEvent extends Event {
+  data: any;
 }

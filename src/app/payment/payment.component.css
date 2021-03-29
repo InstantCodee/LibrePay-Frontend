@@ -29,9 +29,6 @@
 }
 
 .loader {
-    position: absolute;
-    display: inline;
-    transform: translateY(-24px) translateX(32px);
 }
 
 /* Styles for payment screen (not for payment choosing) */
@@ -140,12 +137,34 @@
 }
 
 #status {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 0 2rem;
+    grid-template-areas:
+      "headline ."
+      "text loader"
+      "sub .";
     grid-row: 4;
+}
+
+#status .loader {
+  grid-area: loader;
+}
+
+#status #statusHeadline {
+  grid-area: headline;
+}
+#status #statusText {
+  grid-area: text;
+}
+#status .statusSub {
+  grid-area: sub;
 }
 
 .price {
     font-size: 10pt;
-    font-weight: light;
+    font-weight: lighter;
 }
 
 .main h3 {

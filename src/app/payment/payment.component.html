@@ -1,97 +1,103 @@
 <div class="payment" *ngIf="this.backend.errorLoadingInvoice">
-    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alert-circle" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-        <circle cx="12" cy="12" r="9"></circle>
-        <line x1="12" y1="8" x2="12" y2="12"></line>
-        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-     </svg>
-     <h2>Invoice not found</h2>
-     <p>We couldn't found the invoice you are looking for.</p>
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alert-circle" width="24" height="24"
+       viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+       stroke-linejoin="round">
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <circle cx="12" cy="12" r="9"></circle>
+    <line x1="12" y1="8" x2="12" y2="12"></line>
+    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+  </svg>
+  <h2>Invoice not found</h2>
+  <p>We couldn't found the invoice you are looking for.</p>
 </div>
 
 <!--
     Select payment method
 -->
 <div class="payment" xyz="stagger-2 fade-100% down-1" *ngIf="this.backend.isInvoiceRequested()">
-    <h3 id="title">Choose your<br>payment method</h3>
-    <p id="price">{{ this.backend.invoice.totalPrice!.toFixed(2) }} {{ this.backend.currencyPrefix() }}</p>
+  <h3 id="title">Choose your<br>payment method</h3>
+  <p id="price">{{ this.backend.invoice.totalPrice!.toFixed(2) }} {{ this.backend.currencyPrefix() }}</p>
 
-    <ul id="list">
-        <li class="xyz-in" *ngFor="let coin of this.backend.invoice!!.paymentMethods" (click)="chooseMethod(coin.method)">
-            <img [src]="this.backend.getIcon(coin.method)">
-            <div>
-                <h4>{{ this.backend.findCryptoBySymbol(coin.method) }}</h4>
-                <p>{{ coin.amount }} {{ coin.method }}</p>
-            </div>
-        </li>
-    </ul>
+  <ul id="list">
+    <li class="xyz-in" *ngFor="let coin of this.backend.invoice!!.paymentMethods" (click)="chooseMethod(coin.method)">
+      <img [src]="this.backend.getIcon(coin.method)">
+      <div>
+        <h4>{{ this.backend.findCryptoBySymbol(coin.method) }}</h4>
+        <p>{{ coin.amount }} {{ coin.method }}</p>
+      </div>
+    </li>
+  </ul>
 </div>
 
 <!--
     Main view
 -->
 <div class="payment main" xyz="stagger-0.5 fade-100% down-1 ease-ease"
-    *ngIf="!this.backend.isInvoiceRequested() && ready && !hideMain"
-    [ngClass]="{invalid: status === 'Expired' || status === 'Paid too little' || status === 'Cancelled by user'}">
+     *ngIf="!this.backend.isInvoiceRequested() && ready && !hideMain"
+     [ngClass]="{invalid: status === 'Expired' || status === 'Paid too little' || status === 'Cancelled by user'}">
 
-    <div class="qrWrapper" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
-        <div class="qr">
-            <img [src]="this.backend.getIcon()">
-            <qrcode
-                [qrdata]="this.backend.findCryptoBySymbol()!.toLowerCase() + ':' + this.backend.invoice.receiveAddress + '?amount=' + this.backend.getAmount()"
-                [width]="256"
-                [errorCorrectionLevel]="'M'"
-                [elementType]="'svg'"
-                [margin]="1">
-            </qrcode>
-        </div>
+  <div class="qrWrapper" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
+    <div class="qr">
+      <img [src]="this.backend.getIcon()">
+      <qrcode
+        [qrdata]="this.backend.findCryptoBySymbol()!.toLowerCase() + ':' + this.backend.invoice.receiveAddress + '?amount=' + this.backend.getAmount()"
+        [width]="256"
+        [errorCorrectionLevel]="'M'"
+        [elementType]="'svg'"
+        [margin]="1">
+      </qrcode>
+    </div>
+  </div>
+
+  <div class="data">
+    <!-- Payment data -->
+    <img
+      ngxClipboard
+      [cbContent]="this.backend.invoice.receiveAddress"
+      class="clipboard clipboard-target"
+      src="assets/clipboard.svg"
+      [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
+    <div id="target" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
+      Send to
+      <h3>{{ getReceiveAddress() }}</h3>
     </div>
 
-    <div class="data">
-        <!-- Payment data -->
-        <img
-            ngxClipboard
-            [cbContent]="this.backend.invoice.receiveAddress"
-            class="clipboard clipboard-target"
-            src="assets/clipboard.svg"
-            [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
-        <span id="target" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
-            Send to
-            <h3>{{ getReceiveAddress() }}</h3>
-        </span>
-
-        <img
-            ngxClipboard
-            [cbContent]="this.backend.getAmount()"
-            class="clipboard clipboard-amount"
-            src="assets/clipboard.svg"
-            [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
-        <span id="amount" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">Amount
-            <h3>{{ this.backend.getAmount() }} {{ this.backend.invoice.paymentMethod }} <span class="price"> | {{ this.backend.invoice.totalPrice!.toFixed(2) }} {{ this.backend.currencyPrefix() }}</span></h3>
-        </span>
-
-        <span id="status" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">Status
-            <h3>
-                <p>{{ status }}</p>
-                <div class="loader" *ngIf="this.status === 'Unconfirmed'">
-                    <img src="assets/loader.svg">
-                </div>
-                <div *ngIf="this.status === 'Paid' && this.backend.invoice.transactionLink !== undefined">
-                    <a [href]="this.backend.invoice.transactionLink" target="_blank" class="viewtx">View transaction</a>
-                </div>
-            </h3>
-            <small *ngIf="status === 'Unconfirmed'">Confirmations: {{ this.backend.confirmations }}</small>
-        </span>
+    <img
+      ngxClipboard
+      [cbContent]="this.backend.getAmount()"
+      class="clipboard clipboard-amount"
+      src="assets/clipboard.svg"
+      [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
+    <div id="amount" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">Amount
+      <h3>{{ this.backend.getAmount() }} {{ this.backend.invoice.paymentMethod }} <span
+        class="price"> | {{ this.backend.invoice.totalPrice!.toFixed(2) }} {{ this.backend.currencyPrefix() }}</span>
+      </h3>
     </div>
-    <div class="progress" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}" *ngIf="status === 'Pending'">
-        <div>
-            <img src="assets/clock.svg">
-            <span>{{ formatedTime }}</span>
-        </div>
-        <svg viewBox="0, 0, 1000, 10">
-            <rect [attr.width]='progressTime' height="5" fill="#fff"></rect>
-        </svg>
+
+    <div id="status" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}">
+      <span id="statusHeadline">Status</span>
+      <h3 id="statusText">
+        {{ status }}
+        <a *ngIf="this.backend.invoice.transactionLink !== null" [href]="this.backend.invoice.transactionLink" target="_blank" class="viewtx">| View
+          transaction</a>
+      </h3>
+      <div class="loader" *ngIf="this.status === 'Unconfirmed'">
+        <img src="assets/loader.svg">
+      </div>
+      <small class="statusSub"
+             *ngIf="status === 'Unconfirmed'">Confirmations: {{ this.backend.confirmations }}</small>
     </div>
+  </div>
+  <div class="progress" [ngClass]="{'xyz-in': !this.state.showCart.value, 'xyz-out': this.state.showCart.value}"
+       *ngIf="status === 'Pending'">
+    <div>
+      <img src="assets/clock.svg">
+      <span>{{ formatedTime }}</span>
+    </div>
+    <svg viewBox="0, 0, 1000, 10">
+      <rect [attr.width]='progressTime' height="5" fill="#fff"></rect>
+    </svg>
+  </div>
 </div>
 
 <!--
@@ -103,18 +109,20 @@
     Alerts
 -->
 <div class="alert xyz-in" xyz="fade-100% duration-3 down-1" *ngIf="status === 'Expired'">
-    <p><b>This invoice expired</b>
+  <p><b>This invoice expired</b>
     <br>You cannot pay this invoice anymore. Please try to request a new invoice. </p>
 </div>
 <div class="alert xyz-in" xyz="fade-100% duration-3 down-1" *ngIf="status === 'Paid too much'">
-    <p><b>Looks like you paid too much.</b>
-    <br>Technically <u><b>this invoice is paid</b></u> but we would like to pay the rest back. Since sending back funds is complicated we would like you to contact support@example.org</p>
+  <p><b>Looks like you paid too much.</b>
+    <br>Technically <u><b>this invoice is paid</b></u> but we would like to pay the rest back. Since sending back funds
+    is complicated we would like you to contact support@example.org</p>
 </div>
 <div class="alert xyz-in" xyz="fade-100% duration-3 down-1" *ngIf="status === 'Paid too little'">
-    <p><b>Looks like you paid not the requested amount of money.</b>
-    <br><u><b>You cannot pay twice!</b></u> Since sending back funds is complicated we would like you to contact support@example.org</p>
+  <p><b>Looks like you paid not the requested amount of money.</b>
+    <br><u><b>You cannot pay twice!</b></u> Since sending back funds is complicated we would like you to contact
+    support@example.org</p>
 </div>
 <div class="alert xyz-in" xyz="fade-100% duration-3 down-1" *ngIf="status === 'Cancelled by user'">
-    <p><b>Cancelled</b>
+  <p><b>Cancelled</b>
     <br>This invoice has been cancelled by the user and cannot be paid anymore.</p>
 </div>

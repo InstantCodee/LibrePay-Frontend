@@ -27,20 +27,12 @@
 }
 
 .item:hover {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-}
-
-.item:hover img {
-    transform: rotate(5deg);
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
 }
 
 .item:nth-child(even) {
     background-color: #292929;
-}
-
-.item:nth-child(even):hover img {
-    transform: rotate(-5deg);
 }
 
 .image {
