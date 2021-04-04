@@ -24,6 +24,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SummaryComponent } from './dashboard/summary/summary.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { WidgetComponent } from './dashboard/widget/widget.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
@@ -42,7 +44,8 @@ const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
     OverviewComponent,
     DashboardHeaderComponent,
     ChartComponent,
-    SummaryComponent
+    SummaryComponent,
+    WidgetComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +61,8 @@ const config: SocketIoConfig = { url: 'http://localhost:2009', options: {} };
     BrowserAnimationsModule,
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts')
-    })
+    }),
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

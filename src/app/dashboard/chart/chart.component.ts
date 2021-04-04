@@ -1,5 +1,6 @@
 import { Component} from '@angular/core'
 import { EChartsOption } from 'echarts';
+import {faArrowDown, faCircle, faExclamationCircle, faMoneyBill} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-chart',
@@ -7,6 +8,12 @@ import { EChartsOption } from 'echarts';
   styleUrls: ['./chart.component.css']
 })
 export class ChartComponent {
+
+  failedicon = faExclamationCircle;
+  crypto = faCircle;
+  downn = faArrowDown;
+  money = faMoneyBill;
+
   chartOption: EChartsOption = {
     color: ["#C61A4E"],
     xAxis: {
