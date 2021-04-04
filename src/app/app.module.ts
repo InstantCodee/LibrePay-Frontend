@@ -24,6 +24,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SummaryComponent } from './dashboard/summary/summary.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { WidgetComponent } from './dashboard/widget/widget.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 @NgModule({
@@ -40,7 +42,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     OverviewComponent,
     DashboardHeaderComponent,
     ChartComponent,
-    SummaryComponent
+    SummaryComponent,
+    WidgetComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +57,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     BrowserAnimationsModule,
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts')
-    })
+    }),
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
