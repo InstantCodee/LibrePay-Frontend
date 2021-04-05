@@ -18,11 +18,13 @@
 .header:hover {
     max-height: 55px;
     transition: .2s ease;
+    cursor: pointer;
 }
 
 .icon::after {
     content: ' ';
     opacity: 0;
+
 }
 
 .header:hover .icon::after {

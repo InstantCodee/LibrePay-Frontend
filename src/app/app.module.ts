@@ -7,7 +7,6 @@ import { PaymentComponent } from './payment/payment.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { PayComponent } from './pay/pay.component';
 import { HelloComponent } from './hello/hello.component';
-import { SocketIoModule } from 'ngx-socket-io';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from 'src/routes';
 import { NotFoundComponent } from './not-found/not-found.component';
@@ -26,6 +25,8 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { WidgetComponent } from './dashboard/widget/widget.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {HistoryComponent} from './dashboard/history/history.component';
+import {SettingsComponent} from './dashboard/settings/settings.component';
 
 
 @NgModule({
@@ -43,7 +44,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     DashboardHeaderComponent,
     ChartComponent,
     SummaryComponent,
-    WidgetComponent
+    WidgetComponent,
+    HistoryComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
