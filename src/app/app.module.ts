@@ -25,8 +25,11 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { WidgetComponent } from './dashboard/widget/widget.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {HistoryComponent} from './dashboard/history/history.component';
-import {SettingsComponent} from './dashboard/settings/settings.component';
+import {HistoryComponent } from './dashboard/history/history.component';
+import {SettingsComponent } from './dashboard/settings/settings.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import {BackendInterceptor} from './interceptor';
+
 
 
 @NgModule({
@@ -46,7 +49,8 @@ import {SettingsComponent} from './dashboard/settings/settings.component';
     SummaryComponent,
     WidgetComponent,
     HistoryComponent,
-    SettingsComponent
+    SettingsComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -63,7 +67,13 @@ import {SettingsComponent} from './dashboard/settings/settings.component';
     }),
     FontAwesomeModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: BackendInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
