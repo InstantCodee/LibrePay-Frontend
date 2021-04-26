@@ -79,6 +79,9 @@ export class BackendService {
     redirectTo: '',
     testnet: false
   };
+
+  private token = '';
+
   invoiceUpdate: BehaviorSubject<IInvoice | null>;
   events: EventSource | undefined;
 
@@ -339,8 +342,29 @@ export class BackendService {
   isInvoiceRequested(): boolean {
     return this.invoice?.status === PaymentStatus.REQUESTED;
   }
+
+  getToken(): string {
+    return this.token;
+  }
+
+  login(username: string, password: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.http.post(`${this.SERVER_URL}/user/login`, {username, password}, {
+        observe: 'body',
+        responseType: 'json'
+      }).toPromise().then((res: any) => {
+        this.token = res.token;
+        resolve();
+      }).catch(err => {
+        reject(err);
+      });
+    });
+  }
+
 }
+
 
 interface CustomEvent extends Event {
   data: any;
 }
+
