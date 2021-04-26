@@ -1,0 +1,13 @@
+<div class="header">
+    <div class="grid-container">
+        <div class="sumy">
+            <a class="sum">Summary</a>
+        </div>
+        <div class="dropdown">
+            <ng-select [(ngModel)]="summary">
+                <ng-option *ngFor="let date of dates" [value]="date.id">{{date.name}}</ng-option>
+            </ng-select>
+        </div>
+        <div class="void"></div>
+    </div>
+</div>

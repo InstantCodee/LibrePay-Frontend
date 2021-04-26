@@ -1,0 +1,18 @@
+<div class="header" *ngIf="this.backend.isLoggedIn">
+
+    <div class="grid-container">
+        <div class="dashboard icon" routerLink="overview">
+            <img src="assets/dashboard.svg" class="dash-svg">
+        </div>
+        <div class="history icon">
+            <img src="assets/history.svg" class="history-svg">
+        </div>
+        <div class="settings icon" routerLink="settings">
+            <img src="assets/settings.svg" class="settings-svg">
+        </div>
+        <div class="admin icon">
+            <img src="assets/admin.svg" class="admin-svg">
+        </div>
+    </div>
+
+</div>

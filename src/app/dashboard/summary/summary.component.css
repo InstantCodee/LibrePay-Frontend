@@ -1,0 +1,52 @@
+.header {
+    background: #242635;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 8px 8px 0px 0px;
+    margin: 0;
+    padding: 0;
+    padding: 2rem;
+    padding-right: 2rem;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    margin: 0 auto;
+    width: 80%;
+}
+
+.lower {
+    background-color: #26283A;
+    margin: 0;
+    padding: 6rem;
+}
+
+.sum {
+    color: #fff;
+    line-height: 29px;
+    font-size: 24px;
+    font-weight: 800;
+    font-style: normal;
+    font-family: 'Inter';
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 0px 0px;
+    grid-template-areas: "sum dropdown void1 void" ". . . ." ". . . .";
+}
+
+.sum {
+    grid-area: sum;
+}
+
+.void {
+    grid-area: void;
+}
+
+.dropdown {
+    grid-area: dropdown;
+}
+
+.void1 {
+    grid-area: void1;
+}

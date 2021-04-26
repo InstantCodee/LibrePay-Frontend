@@ -126,6 +126,8 @@ export class PaymentComponent implements OnInit {
   }
 
   async get(): Promise<void> {
+    console.log('Selector:', this.paymentSelector);
+
     const res = await this.backend.setInvoice(this.paymentSelector);
     this.status = this.backend.getStatusString();
     this.backend.getConfirmation().catch();
