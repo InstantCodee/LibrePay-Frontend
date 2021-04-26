@@ -1,35 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { DashboardService } from 'src/app/dashboard.service';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {DashboardService} from 'src/app/dashboard.service';
+import {BackendService} from '../../backend.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   username = '';
   password = '';
 
   constructor(
     public dashboard: DashboardService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private backend: BackendService
+  ) {
+  }
 
-  ngOnInit(): void {
 
-    const loginStatus = this.dashboard.login("admin", "password");
+  async login(): Promise<void> {
+
+    const loginStatus = await this.backend.login(this.username, this.password);
     if (loginStatus) {
       this.router.navigate(['dashboard', 'overview']);
     } else {
       // TODO: Meldung anzeigen
     }
-  }
-
-
-  login() {
-    const loginStatus = this.dashboard.login(this.username, this.password);
 
     if (loginStatus) {
       this.router.navigate(['dashboard', 'overview']);

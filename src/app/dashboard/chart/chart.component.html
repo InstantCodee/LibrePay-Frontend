@@ -1,9 +1,9 @@
 <app-summary></app-summary>
 <div class="bg">
     <div class="grid-container">
-      <div class="a"><dashboard-widget [icon]="money" [title]="'Income'" [content]="'1.150,84€'" [subcontent]="'+46.50%'"></dashboard-widget></div>
-      <div class="b"><dashboard-widget [icon]="downn" [title]="'Transactions completed'" [content]="'58'" [subcontent]="'+4.50%'"></dashboard-widget></div>
-      <div class="c"><dashboard-widget [icon]="failedicon" [title]="'Transactions failed'" [content]="'0'" [subcontent]="'+-0%'"></dashboard-widget></div>
+      <div class="a"><dashboard-widget [icon]="money" [title]="'Income'" [content]="this.summary.income + '€'" [subcontent]="'+46.50%'"></dashboard-widget></div>
+      <div class="b"><dashboard-widget [icon]="downn" [title]="'Transactions completed'" [content]="this.summary.transactionsCompleted" [subcontent]="'+4.50%'"></dashboard-widget></div>
+      <div class="c"><dashboard-widget [icon]="failedicon" [title]="'Transactions failed'" [content]="this.summary.transactionsFailed" [subcontent]="'+-0%'"></dashboard-widget></div>
       <div class="d"><dashboard-widget [icon]="crypto" [title]="'Top currency'" [content]="'Monero'"></dashboard-widget></div>
     </div>
       <div echarts [options]="chartOption" class="demo-chart"></div>

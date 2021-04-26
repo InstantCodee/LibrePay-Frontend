@@ -33,18 +33,6 @@ export class DashboardService {
     private backend: BackendService
   ) {}
 
-  login(username: string, password: string): boolean {
-    if (username === 'admin' && password === 'password') {
-      this.user = {
-        username: 'admin',
-        token: 'abc'
-      };
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   getInvoices(): void {
     // const headers = new HttpHeaders({ token: this.backend.token });
     this.http.get('http://localhost:2009/invoice', {

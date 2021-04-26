@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DashboardService } from 'src/app/dashboard.service';
+import {BackendService} from '../../backend.service';
 
 @Component({
   selector: 'dashboard-header',
@@ -11,7 +12,8 @@ export class DashboardHeaderComponent implements OnInit {
 
   constructor(
     public dashboard: DashboardService,
-    public router: Router
+    public router: Router,
+    public backend: BackendService
   ) { }
 
   ngOnInit(): void {

@@ -81,6 +81,7 @@ export class BackendService {
   };
 
   private token = '';
+  isLoggedIn = false;
 
   invoiceUpdate: BehaviorSubject<IInvoice | null>;
   events: EventSource | undefined;
@@ -347,19 +348,32 @@ export class BackendService {
     return this.token;
   }
 
-  login(username: string, password: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
+  login(username: string, password: string): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
       this.http.post(`${this.SERVER_URL}/user/login`, {username, password}, {
         observe: 'body',
         responseType: 'json'
       }).toPromise().then((res: any) => {
         this.token = res.token;
-        resolve();
+        this.isLoggedIn = true;
+        resolve(true);
+      }).catch(err => {
+        resolve(false);
+        // reject(err);
+      });
+    });
+  }
+
+  getSummary(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this.http.get(`${this.SERVER_URL}/data/summary`).toPromise().then((res: any) => {
+        resolve(res);
       }).catch(err => {
         reject(err);
       });
     });
   }
+
 
 }
 
